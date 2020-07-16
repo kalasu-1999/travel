@@ -84,6 +84,7 @@ public class MessageController {
             map.put("code", -2);
             map.put("msg", "用户信息获取失败");
         } else {
+            PageHelper.startPage(page, size);
             List<Map<String, Object>> messageList = messageService.selectMessageByGuestId(guest.getGuestId());
             PageInfo<Map<String, Object>> messages = new PageInfo<>(messageList);
             if (messageList.isEmpty()) {

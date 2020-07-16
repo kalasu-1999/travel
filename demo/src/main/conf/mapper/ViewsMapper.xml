@@ -35,4 +35,11 @@
     select view_id, view_name, view_image, content
     from views
   </select>
+
+  <!--List<Views> selectByHint(String hint);-->
+  <select id="selectAll" resultMap="BaseResultMap">
+    select view_id, view_name, view_image, content
+    from views
+    where view_name like '%${hint}%' or content like '%${hint}%'
+  </select>
 </mapper>

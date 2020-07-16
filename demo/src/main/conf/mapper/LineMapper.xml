@@ -85,4 +85,52 @@
     line_phone, status, djs, bak, weblog
     from line
   </select>
+
+  <!--List<String> getAllStartPlace();-->
+  <select id="getAllStartPlace" resultType="java.lang.String">
+    select start_place
+    from line
+  </select>
+
+  <!--List<String> getAllEndPlace();-->
+  <select id="getAllEndPlace" resultType="java.lang.String">
+    select end_place
+    from line
+  </select>
+
+  <!--List<Line> getLineByStartPlace(String startPlace);-->
+  <select id="getLineByStartPlace" resultMap="BaseResultMap">
+    select line_id, line_level, line_name, line_type, start_place, end_place, day, price1,
+    price2, qp, dp, meet_place, meet_phone, go_transport, back_transport, line_image,
+    line_phone, status, djs, bak, weblog
+    from line
+    where start_place = #{startPlace}
+  </select>
+
+  <!--List<Line> getLineByEndPlace(String endPlace);-->
+  <select id="getLineByEndPlace" resultMap="BaseResultMap">
+    select line_id, line_level, line_name, line_type, start_place, end_place, day, price1,
+    price2, qp, dp, meet_place, meet_phone, go_transport, back_transport, line_image,
+    line_phone, status, djs, bak, weblog
+    from line
+    where end_place = #{endPlace}
+  </select>
+
+  <!--List<Line> getLineByStartPlaceAndEndPlace(String startPlace, String endPlace);-->
+  <select id="getLineByStartPlaceAndEndPlace" resultMap="BaseResultMap">
+    select line_id, line_level, line_name, line_type, start_place, end_place, day, price1,
+    price2, qp, dp, meet_place, meet_phone, go_transport, back_transport, line_image,
+    line_phone, status, djs, bak, weblog
+    from line
+    where start_place = #{startPlace} and end_place = #{endPlace}
+  </select>
+
+  <!--Line selectLineByLineName(String lineName);-->
+  <select id="selectLineByLineName" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select line_id, line_level, line_name, line_type, start_place, end_place, day, price1,
+    price2, qp, dp, meet_place, meet_phone, go_transport, back_transport, line_image,
+    line_phone, status, djs, bak, weblog
+    from line
+    where line_name = #{lineName,jdbcType=INTEGER}
+  </select>
 </mapper>

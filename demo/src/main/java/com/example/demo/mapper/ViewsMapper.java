@@ -13,4 +13,7 @@ public interface ViewsMapper {
     List<Views> selectAll();
 
     int updateByPrimaryKey(Views record);
+
+    //根据hint进行模糊查询
+    List<Views> selectByHint(String hint);
 }

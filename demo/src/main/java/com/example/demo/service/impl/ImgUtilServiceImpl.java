@@ -30,7 +30,7 @@ public class ImgUtilServiceImpl implements ImgUtilService {
             while ((len = is.read(bytes)) != -1) {
                 os.write(bytes, 0, len);
             }
-            return outputPath;
+            return outputFileName;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -38,6 +38,7 @@ public class ImgUtilServiceImpl implements ImgUtilService {
     }
 
     //删除被替换的图片
+    @Override
     public boolean deleteImg(String fileName) {
         File file;
         try {
@@ -55,5 +56,17 @@ public class ImgUtilServiceImpl implements ImgUtilService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    //获取图片路径
+    @Override
+    public String getImgPath(String fileName) {
+        String path = ImgUtilServiceImpl.class.getResource("/").getPath();
+        try {
+            path = URLDecoder.decode(path, "utf8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return path + "imgs/" + fileName;
     }
 }
