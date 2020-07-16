@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.GuestInfoMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.entity.GuestInfo">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="guest_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="address" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="phone" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="email" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from guestInfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.example.demo.entity.GuestInfo">
+    insert into guestInfo (id, guest_id, address,
+      phone, email)
+    values (#{id,jdbcType=INTEGER}, #{guestId,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.GuestInfo">
+    update guestInfo
+    set guest_id = #{guestId,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, guest_id, address, phone, email
+    from guestInfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, guest_id, address, phone, email
+    from guestInfo
+  </select>
+
+  <!--GuestInfo selectByGuestId(Integer guestId);-->
+  <select id="selectByGuestId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, guest_id, address, phone, email
+    from guestInfo
+    where guest_id = #{guestId,jdbcType=INTEGER}
+  </select>
+
+  <!--int updateByGuestId(GuestInfo record);-->
+  <update id="updateByGuestId" parameterType="com.example.demo.entity.GuestInfo">
+    update guestInfo
+    set address = #{address,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR}
+    where guest_id = #{guestId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.entity.Order">
+    <constructor>
+      <idArg column="order_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="guest_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="lineTeam_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="adult" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="child" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="tag" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="bak" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.entity.Order">
+    insert into order (order_id, guest_id, lineTeam_id,
+      adult, child, tag, 
+      bak)
+    values (#{orderId,jdbcType=INTEGER}, #{guestId,jdbcType=INTEGER}, #{lineteamId,jdbcType=INTEGER}, 
+      #{adult,jdbcType=INTEGER}, #{child,jdbcType=INTEGER}, #{tag,jdbcType=INTEGER}, 
+      #{bak,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.Order">
+    update order
+    set guest_id = #{guestId,jdbcType=INTEGER},
+      lineTeam_id = #{lineteamId,jdbcType=INTEGER},
+      adult = #{adult,jdbcType=INTEGER},
+      child = #{child,jdbcType=INTEGER},
+      tag = #{tag,jdbcType=INTEGER},
+      bak = #{bak,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select order_id, guest_id, lineTeam_id, adult, child, tag, bak
+    from order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select order_id, guest_id, lineTeam_id, adult, child, tag, bak
+    from order
+  </select>
+</mapper>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.LineMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.entity.Line">
+    <constructor>
+      <idArg column="line_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="line_level" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="line_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="line_type" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="start_place" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="end_place" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="day" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="price1" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="price2" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="qp" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="dp" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="meet_place" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="meet_phone" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="go_transport" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="back_transport" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="line_image" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="line_phone" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="djs" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="bak" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="weblog" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+    </constructor>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from line
+    where line_id = #{lineId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.entity.Line">
+    insert into line (line_id, line_level, line_name,
+      line_type, start_place, end_place, 
+      day, price1, price2, 
+      qp, dp, meet_place, 
+      meet_phone, go_transport, back_transport, 
+      line_image, line_phone, status, 
+      djs, bak, weblog
+      )
+    values (#{lineId,jdbcType=INTEGER}, #{lineLevel,jdbcType=VARCHAR}, #{lineName,jdbcType=VARCHAR}, 
+      #{lineType,jdbcType=VARCHAR}, #{startPlace,jdbcType=VARCHAR}, #{endPlace,jdbcType=VARCHAR}, 
+      #{day,jdbcType=INTEGER}, #{price1,jdbcType=DECIMAL}, #{price2,jdbcType=DECIMAL}, 
+      #{qp,jdbcType=INTEGER}, #{dp,jdbcType=INTEGER}, #{meetPlace,jdbcType=VARCHAR}, 
+      #{meetPhone,jdbcType=VARCHAR}, #{goTransport,jdbcType=VARCHAR}, #{backTransport,jdbcType=VARCHAR}, 
+      #{lineImage,jdbcType=VARCHAR}, #{linePhone,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{djs,jdbcType=VARCHAR}, #{bak,jdbcType=VARCHAR}, #{weblog,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.Line">
+    update line
+    set line_level = #{lineLevel,jdbcType=VARCHAR},
+      line_name = #{lineName,jdbcType=VARCHAR},
+      line_type = #{lineType,jdbcType=VARCHAR},
+      start_place = #{startPlace,jdbcType=VARCHAR},
+      end_place = #{endPlace,jdbcType=VARCHAR},
+      day = #{day,jdbcType=INTEGER},
+      price1 = #{price1,jdbcType=DECIMAL},
+      price2 = #{price2,jdbcType=DECIMAL},
+      qp = #{qp,jdbcType=INTEGER},
+      dp = #{dp,jdbcType=INTEGER},
+      meet_place = #{meetPlace,jdbcType=VARCHAR},
+      meet_phone = #{meetPhone,jdbcType=VARCHAR},
+      go_transport = #{goTransport,jdbcType=VARCHAR},
+      back_transport = #{backTransport,jdbcType=VARCHAR},
+      line_image = #{lineImage,jdbcType=VARCHAR},
+      line_phone = #{linePhone,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      djs = #{djs,jdbcType=VARCHAR},
+      bak = #{bak,jdbcType=VARCHAR},
+      weblog = #{weblog,jdbcType=LONGVARCHAR}
+    where line_id = #{lineId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select line_id, line_level, line_name, line_type, start_place, end_place, day, price1, 
+    price2, qp, dp, meet_place, meet_phone, go_transport, back_transport, line_image, 
+    line_phone, status, djs, bak, weblog
+    from line
+    where line_id = #{lineId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select line_id, line_level, line_name, line_type, start_place, end_place, day, price1, 
+    price2, qp, dp, meet_place, meet_phone, go_transport, back_transport, line_image, 
+    line_phone, status, djs, bak, weblog
+    from line
+  </select>
+</mapper>

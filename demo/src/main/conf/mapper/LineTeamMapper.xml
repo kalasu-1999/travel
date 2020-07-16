@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.LineTeamMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.entity.LineTeam">
+    <constructor>
+      <idArg column="lineTeam_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="team_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="line_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="go_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="back_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="adult" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="child" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from lineTeam
+    where lineTeam_id = #{lineteamId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.entity.LineTeam">
+    insert into lineTeam (lineTeam_id, team_id, line_id,
+      go_date, back_date, adult, 
+      child)
+    values (#{lineteamId,jdbcType=INTEGER}, #{teamId,jdbcType=INTEGER}, #{lineId,jdbcType=INTEGER}, 
+      #{goDate,jdbcType=TIMESTAMP}, #{backDate,jdbcType=TIMESTAMP}, #{adult,jdbcType=INTEGER}, 
+      #{child,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.LineTeam">
+    update lineTeam
+    set team_id = #{teamId,jdbcType=INTEGER},
+      line_id = #{lineId,jdbcType=INTEGER},
+      go_date = #{goDate,jdbcType=TIMESTAMP},
+      back_date = #{backDate,jdbcType=TIMESTAMP},
+      adult = #{adult,jdbcType=INTEGER},
+      child = #{child,jdbcType=INTEGER}
+    where lineTeam_id = #{lineteamId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select lineTeam_id, team_id, line_id, go_date, back_date, adult, child
+    from lineTeam
+    where lineTeam_id = #{lineteamId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select lineTeam_id, team_id, line_id, go_date, back_date, adult, child
+    from lineTeam
+  </select>
+</mapper>

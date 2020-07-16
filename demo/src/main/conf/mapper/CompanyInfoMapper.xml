@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.CompanyInfoMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.entity.CompanyInfo">
+    <constructor>
+      <idArg column="company_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="company_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="keywords" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="phone" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="address" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="about" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+    </constructor>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from companyInfo
+    where company_id = #{companyId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.entity.CompanyInfo">
+    insert into companyInfo (company_id, company_name, keywords,
+      phone, address, about
+      )
+    values (#{companyId,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR}, #{keywords,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{about,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.CompanyInfo">
+    update companyInfo
+    set company_name = #{companyName,jdbcType=VARCHAR},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      about = #{about,jdbcType=LONGVARCHAR}
+    where company_id = #{companyId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select company_id, company_name, keywords, phone, address, about
+    from companyInfo
+    where company_id = #{companyId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select company_id, company_name, keywords, phone, address, about
+    from companyInfo
+  </select>
+</mapper>

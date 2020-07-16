@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.LineViewsMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.entity.LineViews">
+    <constructor>
+      <idArg column="lineViews_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="line_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="view_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from lineViews
+    where lineViews_id = #{lineviewsId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.entity.LineViews">
+    insert into lineViews (lineViews_id, line_id, view_id
+      )
+    values (#{lineviewsId,jdbcType=INTEGER}, #{lineId,jdbcType=INTEGER}, #{viewId,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.LineViews">
+    update lineViews
+    set line_id = #{lineId,jdbcType=INTEGER},
+      view_id = #{viewId,jdbcType=INTEGER}
+    where lineViews_id = #{lineviewsId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select lineViews_id, line_id, view_id
+    from lineViews
+    where lineViews_id = #{lineviewsId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select lineViews_id, line_id, view_id
+    from lineViews
+  </select>
+</mapper>

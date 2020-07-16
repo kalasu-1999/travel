@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.NewsMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.entity.News">
+    <constructor>
+      <idArg column="news_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="title" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="show" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="delfig" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from news
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.entity.News">
+    insert into news (news_id, title, show,
+      time, delfig)
+    values (#{newsId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{show,jdbcType=VARCHAR}, 
+      #{time,jdbcType=TIMESTAMP}, #{delfig,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.News">
+    update news
+    set title = #{title,jdbcType=VARCHAR},
+      show = #{show,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      delfig = #{delfig,jdbcType=VARCHAR}
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select news_id, title, show, time, delfig
+    from news
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select news_id, title, show, time, delfig
+    from news
+  </select>
+</mapper>

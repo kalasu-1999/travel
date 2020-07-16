@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="DB2Tables" targetRuntime="Mybatis3Simple">
+        <!--去掉注释-->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!--需要配置数据库连接-->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://49.234.73.19:3306/travel?characterEncoding=utf8&amp;useSSL=true"
+                        userId="root"
+                        password="qwer_1024">
+        </jdbcConnection>
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!--指定entity生成的位置-->
+        <javaModelGenerator targetPackage="com.example.demo.entity" targetProject="/home/kalasu/IdeaProjects/软件工程实践短学期/travel/demo/src/main/java">
+            <property name="constructorBased" value="true"/>
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!--sql映射文件生成的位置 mapper.xml-->
+        <sqlMapGenerator targetPackage="mapper"  targetProject="/home/kalasu/IdeaProjects/软件工程实践短学期/travel/demo/src/main/conf">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!--指定DaoMapper生成的位置 mapper.java-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.demo.mapper" targetProject="/home/kalasu/IdeaProjects/软件工程实践短学期/travel/demo/src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!--table是指定每个表的生成策略-->
+        <table tableName="companyInfo" domainObjectName="CompanyInfo" delimitIdentifiers="true">
+<!--            <property name="useActualColumnNames" value="true"/>-->
+        </table>
+        <table tableName="lineTeam" domainObjectName="LineTeam" delimitIdentifiers="true">
+<!--            <property name="useActualColumnNames" value="true"/>-->
+        </table>
+        <table tableName="line" domainObjectName="Line" delimitIdentifiers="true">
+<!--            <property name="useActualColumnNames" value="true"/>-->
+        </table>
+        <table tableName="lineViews" domainObjectName="LineViews" delimitIdentifiers="true">
+<!--            <property name="useActualColumnNames" value="true"/>-->
+        </table>
+        <table tableName="message" domainObjectName="Message" delimitIdentifiers="true">
+<!--            <property name="useActualColumnNames" value="true"/>-->
+        </table>
+        <table tableName="news" domainObjectName="News" delimitIdentifiers="true">
+<!--            <property name="useActualColumnNames" value="true"/>-->
+        </table>
+        <table tableName="order" domainObjectName="Order" delimitIdentifiers="true">
+<!--            <property name="useActualColumnNames" value="true"/>-->
+        </table>
+        <table tableName="guest" domainObjectName="Guest" delimitIdentifiers="true">
+<!--            <property name="useActualColumnNames" value="true"/>-->
+        </table>
+        <table tableName="guestInfo" domainObjectName="GuestInfo" delimitIdentifiers="true">
+<!--            <property name="useActualColumnNames" value="true"/>-->
+        </table>
+        <table tableName="views" domainObjectName="Views" delimitIdentifiers="true">
+<!--            <property name="useActualColumnNames" value="true"/>-->
+        </table>
+        <table tableName="team" domainObjectName="Team" delimitIdentifiers="true">
+<!--            <property name="useActualColumnNames" value="true"/>-->
+        </table>
+    </context>
+</generatorConfiguration>
