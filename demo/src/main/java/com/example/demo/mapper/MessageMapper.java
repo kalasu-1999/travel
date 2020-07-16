@@ -13,4 +13,7 @@ public interface MessageMapper {
     List<Message> selectAll();
 
     int updateByPrimaryKey(Message record);
+
+    //根据用户id获取留言信息按留言id降序排序
+    List<Message> selectMessageByGuestId(Integer guestId);
 }

@@ -34,5 +34,14 @@
   <select id="selectAll" resultMap="BaseResultMap">
     select message_id, guest_id, title, content
     from message
+    order by message_id desc
+  </select>
+
+  <!--List<Message> selectMessageByGuestId(Integer guestId);-->
+  <select id="selectAll" resultMap="BaseResultMap">
+    select message_id, guest_id, title, content
+    from message
+    where guest_id = #{guestId,jdbcType=INTEGER}
+    order by message_id desc
   </select>
 </mapper>

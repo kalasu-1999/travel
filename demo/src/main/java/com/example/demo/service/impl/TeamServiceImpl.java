@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.Team;
 import com.example.demo.mapper.TeamMapper;
 import com.example.demo.service.TeamService;
+import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,8 @@ public class TeamServiceImpl  implements TeamService {
 
     //显示全部旅行团
     @Override
-    public List<Team> selectAllTeam() {
-        return teamMapper.selectAll();
+    public Page<Team> selectAllTeam() {
+        return (Page<Team>) teamMapper.selectAll();
     }
 
     //根据旅行团id获取旅行团信息
@@ -27,13 +28,13 @@ public class TeamServiceImpl  implements TeamService {
 
     //根据旅行团id修改旅行团信息
     @Override
-    public int updateTeamByTeamId(Team team) {
-        return teamMapper.updateByPrimaryKey(team);
+    public int updateTeamByTeamId(String guide1, String guide2, String phone, String bak) {
+        return teamMapper.updateByPrimaryKey(new Team(null,1,guide1,guide2,phone,bak));
     }
 
     //添加旅行团信息
     @Override
-    public int insertTeam(Team team) {
-        return teamMapper.insert(team);
+    public int insertTeam(String guide1, String guide2, String phone, String bak) {
+        return teamMapper.insert(new Team(null,1,guide1,guide2,phone,bak));
     }
 }
