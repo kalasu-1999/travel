@@ -1,10 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Guest;
-import com.example.demo.entity.Message;
 import com.example.demo.service.JWTService;
 import com.example.demo.service.MessageService;
-import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -44,13 +45,56 @@ public class MessageController {
 
     //查询全部留言，按留言id倒序排列
     @RequestMapping("/selectAllMessage")
-    public Map<String, Object> selectAllMessage(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size){
-
+    public Map<String, Object> selectAllMessage(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
+        Map<String, Object> map = new HashMap<>();
+        PageHelper.startPage(page, size);
+        List<Map<String, Object>> messageList = messageService.selectAllMessage();
+        PageInfo<Map<String, Object>> messages = new PageInfo<>(messageList);
+        if (messageList.isEmpty()) {
+            map.put("code", -1);
+            map.put("msg", "留言信息获取失败");
+        } else {
+            map.put("code", 0);
+            map.put("msg", "留言信息获取成功");
+            map.put("messageList", messages);
+        }
+        return map;
     }
 
     //根据留言id删除留言
-    int deleteMessage(Integer messageId);
+    @RequestMapping("/deleteMessage")
+    public Map<String, Object> deleteMessage(Integer messageId) {
+        Map<String, Object> map = new HashMap<>();
+        if (messageService.deleteMessage(messageId) == 1) {
+            map.put("code", 0);
+            map.put("msg", "留言删除成功");
+        } else {
+            map.put("code", -1);
+            map.put("msg", "留言删除失败");
+        }
+        return map;
+    }
 
     //查看用户自己的留言，按留言id倒序排序
-    Page<Message> selectMessageByGuestId(Integer guestId);
+    @RequestMapping("/selectMessageByGuestId")
+    public Map<String, Object> selectMessageByGuestId(HttpServletRequest request, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
+        Map<String, Object> map = new HashMap<>();
+        Guest guest = jwtService.verifyToken(request, "secret");
+        if (guest == null) {
+            map.put("code", -2);
+            map.put("msg", "用户信息获取失败");
+        } else {
+            List<Map<String, Object>> messageList = messageService.selectMessageByGuestId(guest.getGuestId());
+            PageInfo<Map<String, Object>> messages = new PageInfo<>(messageList);
+            if (messageList.isEmpty()) {
+                map.put("code", -1);
+                map.put("msg", "留言信息获取失败");
+            } else {
+                map.put("code", 0);
+                map.put("msg", "留言信息获取成功");
+                map.put("messageList", messages);
+            }
+        }
+        return map;
+    }
 }
