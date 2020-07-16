@@ -41,14 +41,14 @@
   </select>
 
   <!--int updateFlagByNewsId(Integer newsId);-->
-  <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.News">
+  <update id="updateFlagByNewsId" parameterType="com.example.demo.entity.News">
     update news
     set delfig = #{delfig,jdbcType=VARCHAR}
     where news_id = #{newsId,jdbcType=INTEGER}
   </update>
 
   <!--List<News> selectNewsByHint(String hint);-->
-  <select id="selectAll" resultMap="BaseResultMap">
+  <select id="selectNewsByHint" resultMap="BaseResultMap">
     select news_id, title, show, time, delfig
     from news
     where delfig = '0' and (title like '%${hint}%' or show like '%${hint}%')

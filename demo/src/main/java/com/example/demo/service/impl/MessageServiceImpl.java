@@ -4,14 +4,15 @@ import com.example.demo.entity.Message;
 import com.example.demo.mapper.GuestMapper;
 import com.example.demo.mapper.MessageMapper;
 import com.example.demo.service.MessageService;
-import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class MessageServiceImpl implements MessageService {
     @Autowired
     private MessageMapper messageMapper;

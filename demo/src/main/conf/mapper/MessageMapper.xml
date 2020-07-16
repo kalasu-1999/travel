@@ -38,7 +38,7 @@
   </select>
 
   <!--List<Message> selectMessageByGuestId(Integer guestId);-->
-  <select id="selectAll" resultMap="BaseResultMap">
+  <select id="selectMessageByGuestId" resultMap="BaseResultMap">
     select message_id, guest_id, title, content
     from message
     where guest_id = #{guestId,jdbcType=INTEGER}

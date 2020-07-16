@@ -5,9 +5,11 @@ import com.example.demo.mapper.NewsMapper;
 import com.example.demo.service.NewsService;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+@Service
 public class NewsServiceImpl implements NewsService {
     @Autowired
     private NewsMapper newsMapper;
