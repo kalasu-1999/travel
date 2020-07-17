@@ -16,11 +16,14 @@ public interface LineTeamService {
     List<LineTeam> selectAll();
 
     //修改人数（直接增加输入的值）
-    int addPeople(Integer lineteamId, Integer adult, Integer child);
+    void addPeople(Integer lineteamId, Integer adult, Integer child);
 
     //多条件查询
     List<LineTeam> selectLineTeamByMore(Integer lineteamId, Integer teamId, Integer lineId, Date goDate, Date backDate, Integer adult, Integer child);
 
     //多表联查
     List<LineTeam> selectByTables(Integer teamId, String bak, Integer lineTeamId, Date goDate, Integer lineId, String lineName, String startPlace, String endPlace, Integer viewId, String viewName);
+
+    //根据id获取信息
+    LineTeam selectByLineTeamId(Integer lineteamId);
 }

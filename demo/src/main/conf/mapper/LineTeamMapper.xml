@@ -12,6 +12,7 @@
       <arg column="child" javaType="java.lang.Integer" jdbcType="INTEGER" />
     </constructor>
   </resultMap>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from lineTeam
     where lineTeam_id = #{lineteamId,jdbcType=INTEGER}
@@ -84,7 +85,7 @@
 
   <!--List<LineTeam> selectByTables(Integer teamId, String bak, Integer lineTeamId, Date goDate, Integer lineId, String lineName, String startPlace, String endPlace, Integer viewId, String viewName);-->
   <select id="selectByTables" resultMap="BaseResultMap">
-    select distinct lt.lineTeam_id, lt.team_id, lt.line_id, go_date, back_date, adult, child
+    select distinct lt.lineTeam_id, lt.team_id, lt.line_id, lt.go_date, lt.back_date, lt.adult, lt.child
     from line l left join lineTeam lt on l.line_id = lt.line_id
     left join team t on lt.team_id = t.team_id
     left join lineViews lv on l.line_id = lv.line_id

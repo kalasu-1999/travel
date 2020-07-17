@@ -13,4 +13,13 @@ public interface OrderMapper {
     List<Order> selectAll();
 
     int updateByPrimaryKey(Order record);
+
+    //根据用户id获取全部订单
+    List<Order> selectOrderByGuestId(Integer guestId);
+
+    //修改订单标记
+    int updateOrderTag(Order record);
+
+    //按订单标记查询
+    List<Order> selectOrderByTag(Integer tag);
 }

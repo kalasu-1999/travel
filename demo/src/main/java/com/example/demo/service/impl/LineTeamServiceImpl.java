@@ -30,8 +30,8 @@ public class LineTeamServiceImpl implements LineTeamService {
     }
 
     @Override
-    public int addPeople(Integer lineteamId, Integer adult, Integer child) {
-        return lineTeamMapper.addPeople(new LineTeam(lineteamId, null, null, null, null, adult, child));
+    public void addPeople(Integer lineteamId, Integer adult, Integer child) {
+        lineTeamMapper.addPeople(new LineTeam(lineteamId, null, null, null, null, adult, child));
     }
 
     @Override
@@ -40,7 +40,12 @@ public class LineTeamServiceImpl implements LineTeamService {
     }
 
     @Override
+    public LineTeam selectByLineTeamId(Integer lineteamId) {
+        return lineTeamMapper.selectByPrimaryKey(lineteamId);
+    }
+
+    @Override
     public List<LineTeam> selectByTables(Integer teamId, String bak, Integer lineTeamId, Date goDate, Integer lineId, String lineName, String startPlace, String endPlace, Integer viewId, String viewName) {
-        return null;
+        return lineTeamMapper.selectByTables(teamId, bak, lineTeamId, goDate, lineId, lineName, startPlace, endPlace, viewId, viewName);
     }
 }
