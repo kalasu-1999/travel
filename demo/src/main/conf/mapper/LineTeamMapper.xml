@@ -91,7 +91,7 @@
     left join lineViews lv on l.line_id = lv.line_id
     left join views v on lv.view_id = v.view_id
     <trim prefix="where" suffix="" prefixOverrides="" suffixOverrides="and">
-        t.state = 0 and
+        l.status = 0 and
       <if test="teamId!=null">
         t.team_id = #{teamId} and
       </if>

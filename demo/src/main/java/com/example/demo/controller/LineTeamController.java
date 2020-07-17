@@ -109,24 +109,26 @@ public class LineTeamController {
             for (LineTeam lineTeam : lineTeams) {
                 Map<String, Object> m = new HashMap<>();
                 Line line = lineService.selectLineByLineId(lineTeam.getLineId());
-                List<LineViews> lineViews = viewLineService.selectAllView(line.getLineId());
-                List<Map<String, Object>> viewsList = new ArrayList<>();
-                for (LineViews lineView : lineViews) {
-                    Views views = viewsService.selectViewsByViewId(lineView.getViewId());
-                    Map<String, Object> t = new HashMap<>();
-                    t.put("viewId", views.getViewId());
-                    t.put("viewName", views.getViewName());
-                    t.put("viewImage", views.getViewImage());
-                    t.put("content", views.getContent());
-                    t.put("lineViewsId", lineView.getLineviewsId());
-                    viewsList.add(t);
+                if (line != null) {
+                    List<LineViews> lineViews = viewLineService.selectAllView(line.getLineId());
+                    List<Map<String, Object>> viewsList = new ArrayList<>();
+                    for (LineViews lineView : lineViews) {
+                        Views views = viewsService.selectViewsByViewId(lineView.getViewId());
+                        Map<String, Object> t = new HashMap<>();
+                        t.put("viewId", views.getViewId());
+                        t.put("viewName", views.getViewName());
+                        t.put("viewImage", views.getViewImage());
+                        t.put("content", views.getContent());
+                        t.put("lineViewsId", lineView.getLineviewsId());
+                        viewsList.add(t);
+                    }
+                    Team team = teamService.selectTeamByTeamId(lineTeam.getTeamId());
+                    m.put("line", line);
+                    m.put("team", team);
+                    m.put("lineTeam", lineTeam);
+                    m.put("viewsList", viewsList);
+                    list.add(m);
                 }
-                Team team = teamService.selectTeamByTeamId(lineTeam.getTeamId());
-                m.put("line", line);
-                m.put("team", team);
-                m.put("lineTeam", lineTeam);
-                m.put("viewsList", viewsList);
-                list.add(m);
             }
             PageHelper.startPage(page, size);
             PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list);
