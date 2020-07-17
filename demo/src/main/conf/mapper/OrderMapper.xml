@@ -13,11 +13,11 @@
     </constructor>
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from order
+    delete from orders
     where order_id = #{orderId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.demo.entity.Order">
-    insert into order (order_id, guest_id, lineTeam_id,
+    insert into orders (order_id, guest_id, lineTeam_id,
       adult, child, tag, 
       bak)
     values (#{orderId,jdbcType=INTEGER}, #{guestId,jdbcType=INTEGER}, #{lineteamId,jdbcType=INTEGER}, 
@@ -25,7 +25,7 @@
       #{bak,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.Order">
-    update order
+    update orders
     set guest_id = #{guestId,jdbcType=INTEGER},
       lineTeam_id = #{lineteamId,jdbcType=INTEGER},
       adult = #{adult,jdbcType=INTEGER},
@@ -35,24 +35,24 @@
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select order_id, guest_id, lineTeam_id, adult, child, tag, bak
-    from order
+    from orders
     where order_id = #{orderId,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select order_id, guest_id, lineTeam_id, adult, child, tag, bak
-    from order
+    from orders
   </select>
 
   <!--List<Order> selectOrderByGuestId(Integer guestId);-->
   <select id="selectOrderByGuestId" resultMap="BaseResultMap">
     select order_id, guest_id, lineTeam_id, adult, child, tag, bak
-    from order
+    from orders
     where guest_id = #{guestId,jdbcType=INTEGER}
   </select>
 
   <!--int updateOrderTag(Order record);-->
   <update id="updateOrderTag" parameterType="com.example.demo.entity.Order">
-    update order
+    update orders
     set
       tag = #{tag,jdbcType=INTEGER}
     where order_id = #{orderId,jdbcType=INTEGER}
@@ -61,7 +61,7 @@
   <!--List<Order> selectOrderByTag(Integer tag);-->
   <select id="selectOrderByTag" resultMap="BaseResultMap">
     select order_id, guest_id, lineTeam_id, adult, child, tag, bak
-    from order
+    from orders
     where tag = #{tag,jdbcType=INTEGER}
   </select>
 </mapper>

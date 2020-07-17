@@ -41,10 +41,10 @@ public class OrderController {
         if (guest != null) {
             if (orderService.insertOrder(guest.getGuestId(),lineteamId,adult,child,bak) == 1) {
                 map.put("code", 0);
-                map.put("msg", "订单修改成功");
+                map.put("msg", "订单添加成功");
             } else {
                 map.put("code", -1);
-                map.put("msg", "订单修改失败");
+                map.put("msg", "订单添加失败");
             }
         } else {
             map.put("code", -2);
