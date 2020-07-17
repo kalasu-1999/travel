@@ -35,14 +35,20 @@ public class OrderController {
 
     //添加订单
     @RequestMapping("/insertOrder")
-    public Map<String, Object> insertOrder(Integer guestId, Integer lineteamId, Integer adult, Integer child, String bak) {
+    public Map<String, Object> insertOrder(HttpServletRequest request, Integer lineteamId, Integer adult, Integer child, String bak) {
         Map<String, Object> map = new HashMap<>();
-        if (orderService.insertOrder(guestId, lineteamId, adult, child, bak) == 1) {
-            map.put("code", 0);
-            map.put("msg", "订单添加成功");
+        Guest guest = jwtService.verifyToken(request, "secret");
+        if (guest != null) {
+            if (orderService.insertOrder(guest.getGuestId(),lineteamId,adult,child,bak) == 1) {
+                map.put("code", 0);
+                map.put("msg", "订单修改成功");
+            } else {
+                map.put("code", -1);
+                map.put("msg", "订单修改失败");
+            }
         } else {
-            map.put("code", -1);
-            map.put("msg", "订单添加失败");
+            map.put("code", -2);
+            map.put("msg", "无法获取到用户信息");
         }
         return map;
     }
