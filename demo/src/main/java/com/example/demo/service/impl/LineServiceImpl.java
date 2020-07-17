@@ -38,7 +38,9 @@ public class LineServiceImpl implements LineService {
             String djs,
             String bak,
             String weblog) {
-        String img = imgUtilService.saveImg(lineImage);
+        if (lineImage != null) {
+            lineImage = imgUtilService.saveImg(lineImage);
+        }
         return lineMapper.insert(
                 new Line(null,
                         lineLevel,
@@ -55,7 +57,7 @@ public class LineServiceImpl implements LineService {
                         meetPhone,
                         goTransport,
                         backTransport,
-                        img,
+                        lineImage,
                         linePhone,
                         0,
                         djs,
@@ -79,8 +81,10 @@ public class LineServiceImpl implements LineService {
         List<Line> lines = lineMapper.selectAll();
         for (Line line : lines) {
             String lineImage = line.getLineImage();
-            String imgPath = imgUtilService.getImgPath(lineImage);
-            line.setLineImage(imgPath);
+            if (lineImage != null) {
+                String imgPath = imgUtilService.getImgPath(lineImage);
+                line.setLineImage(imgPath);
+            }
         }
         return lines;
     }
@@ -91,12 +95,18 @@ public class LineServiceImpl implements LineService {
         if (line == null) {
             return -1;
         } else {
-            String[] split = lineImage.split("/");
-            if (!split[split.length - 1].equals(line.getLineImage())) {
-                imgUtilService.deleteImg(line.getLineImage());
-                lineImage = imgUtilService.saveImg(lineImage);
-            } else {
+            if (lineImage == null) {
                 lineImage = line.getLineImage();
+            } else {
+                if (line.getLineImage() != null) {
+                    String[] split = lineImage.split("/");
+                    if (!split[split.length - 1].equals(line.getLineImage())) {
+                        imgUtilService.deleteImg(line.getLineImage());
+                        lineImage = imgUtilService.saveImg(lineImage);
+                    } else {
+                        lineImage = line.getLineImage();
+                    }
+                }
             }
         }
         return lineMapper.updateByPrimaryKey(
@@ -129,8 +139,10 @@ public class LineServiceImpl implements LineService {
         List<Line> lines = lineMapper.selectLineByMore(new Line(lineId, lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, null, linePhone, 0, djs, bak, weblog));
         for (Line line : lines) {
             String lineImage = line.getLineImage();
-            String imgPath = imgUtilService.getImgPath(lineImage);
-            line.setLineImage(imgPath);
+            if (lineImage != null) {
+                String imgPath = imgUtilService.getImgPath(lineImage);
+                line.setLineImage(imgPath);
+            }
         }
         return lines;
     }
