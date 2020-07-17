@@ -39,7 +39,7 @@ public class ImgUtilServiceImpl implements ImgUtilService {
 
     //删除被替换的图片
     @Override
-    public boolean deleteImg(String fileName) {
+    public void deleteImg(String fileName) {
         File file;
         try {
             String path = ImgUtilServiceImpl.class.getResource("/").getPath();
@@ -49,13 +49,12 @@ public class ImgUtilServiceImpl implements ImgUtilService {
             System.out.println(filePath);
             if (file.exists() && file.isFile()) {
                 if (file.delete()) {
-                    return true;
+                    System.out.println("文件删除成功");
                 }
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     //获取图片路径

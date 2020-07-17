@@ -34,6 +34,11 @@ public class ViewLineServiceImpl implements ViewLineService {
     }
 
     @Override
+    public int deleteViewLineByViewId(Integer viewId) {
+        return lineViewsMapper.deleteViewLineByViewId(viewId);
+    }
+
+    @Override
     public List<LineViews> selectAllView(Integer lineId) {
         return lineViewsMapper.selectAllView(lineId);
     }

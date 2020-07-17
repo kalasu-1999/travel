@@ -35,7 +35,6 @@ public class LineServiceImpl implements LineService {
             String backTransport,
             String lineImage,
             String linePhone,
-            Integer status,
             String djs,
             String bak,
             String weblog) {
@@ -58,7 +57,7 @@ public class LineServiceImpl implements LineService {
                         backTransport,
                         img,
                         linePhone,
-                        status,
+                        0,
                         djs,
                         bak,
                         weblog)
@@ -87,7 +86,7 @@ public class LineServiceImpl implements LineService {
     }
 
     @Override
-    public int updateLineByLineId(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String lineImage, String linePhone, Integer status, String djs, String bak, String weblog) {
+    public int updateLineByLineId(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String lineImage, String linePhone, String djs, String bak, String weblog) {
         Line line = lineMapper.selectByPrimaryKey(lineId);
         if (line == null) {
             return -1;
@@ -118,7 +117,7 @@ public class LineServiceImpl implements LineService {
                         backTransport,
                         lineImage,
                         linePhone,
-                        status,
+                        null,
                         djs,
                         bak,
                         weblog));
@@ -126,8 +125,8 @@ public class LineServiceImpl implements LineService {
 
     //多条件查询
     @Override
-    public List<Line> getLineByMore(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String linePhone, Integer status, String djs, String bak, String weblog) {
-        List<Line> lines = lineMapper.selectLineByMore(new Line(lineId, lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, null, linePhone, status, djs, bak, weblog));
+    public List<Line> getLineByMore(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String linePhone, String djs, String bak, String weblog) {
+        List<Line> lines = lineMapper.selectLineByMore(new Line(lineId, lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, null, linePhone, 0, djs, bak, weblog));
         for (Line line : lines) {
             String lineImage = line.getLineImage();
             String imgPath = imgUtilService.getImgPath(lineImage);
@@ -140,5 +139,10 @@ public class LineServiceImpl implements LineService {
     @Override
     public Line selectLineByLineId(Integer lineId) {
         return lineMapper.selectByPrimaryKey(lineId);
+    }
+
+    @Override
+    public int updateLineState(Integer lineId, Integer state) {
+        return lineMapper.updateLineState(lineId, state);
     }
 }

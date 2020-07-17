@@ -23,6 +23,4 @@ public interface ViewsService {
     //根据景点id进行景点删除
     int deleteViewsByViewId(Integer viewId);
 
-    //根据景点id和景点名称获取景点
-    Views selectViewsByViewIdAndViewName(Integer viewId,String viewName);
 }

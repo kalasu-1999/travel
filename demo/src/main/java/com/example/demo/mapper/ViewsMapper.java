@@ -17,6 +17,4 @@ public interface ViewsMapper {
     //根据hint进行模糊查询
     List<Views> selectByHint(String hint);
 
-    //根据景点id和景点名称获取景点
-    Views selectViewsByViewIdAndViewName(Views record);
 }

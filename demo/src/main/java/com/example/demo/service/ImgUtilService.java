@@ -5,7 +5,7 @@ public interface ImgUtilService {
     String saveImg(String filePath);
 
     //删除被替换的图片
-    boolean deleteImg(String fileName);
+    void deleteImg(String fileName);
 
     //获取图片路径
     String getImgPath(String fileName);

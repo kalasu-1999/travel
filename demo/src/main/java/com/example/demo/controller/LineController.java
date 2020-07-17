@@ -34,9 +34,9 @@ public class LineController {
 
     //添加路线
     @RequestMapping("/insertLine")
-    public Map<String, Object> insertLine(String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String lineImage, String linePhone, Integer status, String djs, String bak, String weblog) {
+    public Map<String, Object> insertLine(String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String lineImage, String linePhone, String djs, String bak, String weblog) {
         Map<String, Object> map = new HashMap<>();
-        if (lineService.insertLine(lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, lineImage, linePhone, status, djs, bak, weblog) == 1) {
+        if (lineService.insertLine(lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, lineImage, linePhone, djs, bak, weblog) == 1) {
             map.put("code", 0);
             map.put("msg", "路线添加成功");
         } else {
@@ -98,9 +98,9 @@ public class LineController {
 
     //根据路线id路线信息修改
     @RequestMapping("/updateLineByLineId")
-    public Map<String, Object> updateLineByLineId(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String lineImage, String linePhone, Integer status, String djs, String bak, String weblog) {
+    public Map<String, Object> updateLineByLineId(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String lineImage, String linePhone, String djs, String bak, String weblog) {
         Map<String, Object> map = new HashMap<>();
-        if (lineService.updateLineByLineId(lineId, lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, lineImage, linePhone, status, djs, bak, weblog) != 0) {
+        if (lineService.updateLineByLineId(lineId, lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, lineImage, linePhone, djs, bak, weblog) != 0) {
             map.put("code", 0);
             map.put("msg", "线路信息修改成功");
         } else {
@@ -128,10 +128,10 @@ public class LineController {
 
     //多条件查询
     @RequestMapping("/getLineByMore")
-    public Map<String, Object> getLineByMore(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String linePhone, Integer status, String djs, String bak, String weblog, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
+    public Map<String, Object> getLineByMore(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String linePhone, String djs, String bak, String weblog, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
         Map<String, Object> map = new HashMap<>();
         PageHelper.startPage(page, size);
-        List<Line> lines = lineService.getLineByMore(lineId, lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, linePhone, status, djs, bak, weblog);
+        List<Line> lines = lineService.getLineByMore(lineId, lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, linePhone, djs, bak, weblog);
         if (lines.size() == 0) {
             map.put("code", -1);
             map.put("msg", "路线信息获取失败或未找到符合条件的路线");
@@ -153,20 +153,34 @@ public class LineController {
             map.put("code", -1);
             map.put("msg", "数据获取失败或未获取到数据");
         } else {
-            List<Map<String,Object>> viewsList = new ArrayList<>();
+            List<Map<String, Object>> viewsList = new ArrayList<>();
             for (LineViews lineView : lineViews) {
                 Views views = viewsService.selectViewsByViewId(lineView.getViewId());
-                Map<String,Object> m = new HashMap<>();
-                m.put("viewId",views.getViewId());
-                m.put("viewName",views.getViewName());
-                m.put("viewImage",imgUtilService.getImgPath(views.getViewImage()));
-                m.put("content",views.getContent());
-                m.put("lineViewsId",lineView.getLineviewsId());
+                Map<String, Object> m = new HashMap<>();
+                m.put("viewId", views.getViewId());
+                m.put("viewName", views.getViewName());
+                m.put("viewImage", imgUtilService.getImgPath(views.getViewImage()));
+                m.put("content", views.getContent());
+                m.put("lineViewsId", lineView.getLineviewsId());
                 viewsList.add(m);
             }
             map.put("code", 0);
             map.put("msg", "数据获取成功");
             map.put("data", viewsList);
+        }
+        return map;
+    }
+
+    //修改线路是否停运（默认0表示运行，1停运）
+    @RequestMapping("/updateLineState")
+    public Map<String, Object> updateLineState(Integer lineId, Integer state) {
+        Map<String, Object> map = new HashMap<>();
+        if (lineService.updateLineState(lineId, state) != 0) {
+            map.put("code", 0);
+            map.put("msg", "线路信息修改成功");
+        } else {
+            map.put("code", -1);
+            map.put("msg", "路线信息修改失败");
         }
         return map;
     }

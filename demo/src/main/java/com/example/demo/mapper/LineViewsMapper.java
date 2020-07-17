@@ -19,4 +19,7 @@ public interface LineViewsMapper {
 
     //根据指定的线路id获取全部景点id
     List<LineViews> selectAllView(Integer lineId);
+
+    //根据viewId删除对应关系
+    int deleteViewLineByViewId(Integer viewId);
 }

@@ -74,9 +74,4 @@ public class ViewsServiceImpl implements com.example.demo.service.ViewsService {
             return viewsMapper.deleteByPrimaryKey(viewId);
         }
     }
-
-    @Override
-    public Views selectViewsByViewIdAndViewName(Integer viewId, String viewName) {
-        return viewsMapper.selectViewsByViewIdAndViewName(new Views(viewId, viewName, null, null));
-    }
 }

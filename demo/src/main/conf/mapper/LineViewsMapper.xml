@@ -47,4 +47,10 @@
     from lineViews
     where line_id = #{lineId}
   </select>
+
+  <!--int deleteViewLineByViewId(Integer viewId);-->
+  <delete id="deleteViewLineByViewId" parameterType="java.lang.Integer">
+    delete from lineViews
+    where view_id = #{viewId,jdbcType=INTEGER}
+  </delete>
 </mapper>

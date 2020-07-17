@@ -66,7 +66,6 @@
       back_transport = #{backTransport,jdbcType=VARCHAR},
       line_image = #{lineImage,jdbcType=VARCHAR},
       line_phone = #{linePhone,jdbcType=VARCHAR},
-      status = #{status,jdbcType=INTEGER},
       djs = #{djs,jdbcType=VARCHAR},
       bak = #{bak,jdbcType=VARCHAR},
       weblog = #{weblog,jdbcType=LONGVARCHAR}
@@ -84,18 +83,21 @@
     price2, qp, dp, meet_place, meet_phone, go_transport, back_transport, line_image, 
     line_phone, status, djs, bak, weblog
     from line
+    where status = 0
   </select>
 
   <!--List<String> getAllStartPlace();-->
   <select id="getAllStartPlace" resultType="java.lang.String">
     select start_place
     from line
+    where status = 0
   </select>
 
   <!--List<String> getAllEndPlace();-->
   <select id="getAllEndPlace" resultType="java.lang.String">
     select end_place
     from line
+    where status = 0
   </select>
 
   <!--List<Line> selectLineByMore(Line record);-->
@@ -167,4 +169,12 @@
       </if>
     </trim>
   </select>
+
+  <!--int updateLineState(Integer lineId, Integer state);-->
+  <update id="updateLineState" parameterType="com.example.demo.entity.Line">
+    update line
+    set
+      status = #{status,jdbcType=INTEGER}
+    where line_id = #{lineId,jdbcType=INTEGER}
+  </update>
 </mapper>

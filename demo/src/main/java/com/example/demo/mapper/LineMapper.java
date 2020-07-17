@@ -22,4 +22,7 @@ public interface LineMapper {
 
     //多条件查询
     List<Line> selectLineByMore(Line record);
+
+    //修改线路是否停运（默认0表示运行，1停运）
+    int updateLineState(Integer lineId, Integer state);
 }
