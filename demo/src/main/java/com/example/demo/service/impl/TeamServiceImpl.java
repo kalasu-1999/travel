@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TeamServiceImpl  implements TeamService {
+public class TeamServiceImpl implements TeamService {
     @Autowired
     private TeamMapper teamMapper;
 
@@ -20,21 +20,21 @@ public class TeamServiceImpl  implements TeamService {
         return (Page<Team>) teamMapper.selectAll();
     }
 
-    //根据旅行团id获取旅行团信息
+    //多条件查询
     @Override
-    public Team selectTeamByTeamId(Integer teamId) {
-        return teamMapper.selectByPrimaryKey(teamId);
+    public Page<Team> selectTeamByMore(Integer teamId, Integer companyId, String guide1, String guide2, String phone, String bak) {
+        return (Page<Team>) teamMapper.selectTeamByMore(new Team(teamId, companyId, guide1, guide2, phone, bak));
     }
 
     //根据旅行团id修改旅行团信息
     @Override
     public int updateTeamByTeamId(String guide1, String guide2, String phone, String bak) {
-        return teamMapper.updateByPrimaryKey(new Team(null,1,guide1,guide2,phone,bak));
+        return teamMapper.updateByPrimaryKey(new Team(null, 1, guide1, guide2, phone, bak));
     }
 
     //添加旅行团信息
     @Override
     public int insertTeam(String guide1, String guide2, String phone, String bak) {
-        return teamMapper.insert(new Team(null,1,guide1,guide2,phone,bak));
+        return teamMapper.insert(new Team(null, 1, guide1, guide2, phone, bak));
     }
 }

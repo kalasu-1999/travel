@@ -38,18 +38,19 @@ public class TeamController {
         return map;
     }
 
-    //根据旅行团id获取旅行团信息
-    @RequestMapping("/selectTeamByTeamId")
-    public Map<String, Object> selectTeamByTeamId(Integer teamId) {
+    //多条件查询
+    @RequestMapping("/selectTeamByMore")
+    public Map<String, Object> selectTeamByMore(Integer teamId, Integer companyId, String guide1, String guide2, String phone, String bak, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
         Map<String, Object> map = new HashMap<>();
-        Team team = teamService.selectTeamByTeamId(teamId);
-        if (team != null) {
+        PageHelper.startPage(page, size);
+        Page<Team> teams = teamService.selectTeamByMore(teamId, companyId, guide1, guide2, phone, bak);
+        if (teams.isEmpty()) {
+            map.put("code", -1);
+            map.put("msg", "旅行团信息获取失败或未能找到符合的旅行团");
+        } else {
             map.put("code", 0);
             map.put("msg", "旅行团信息获取成功");
-            map.put("team", team);
-        } else {
-            map.put("code", -1);
-            map.put("msg", "旅行团信息获取失败");
+            map.put("teamList", teams);
         }
         return map;
     }
@@ -86,15 +87,15 @@ public class TeamController {
     @RequestMapping("/getAllTeams")
     public Map<String, Object> getAllTeams(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
         Map<String, Object> map = new HashMap<>();
-        PageHelper.startPage(page,size);
+        PageHelper.startPage(page, size);
         Page<Team> teams = teamService.selectAllTeam();
-        if (teams.isEmpty()){
+        if (teams.isEmpty()) {
             map.put("code", -1);
             map.put("msg", "旅行团信息获取失败");
         } else {
             map.put("code", 0);
             map.put("msg", "旅行团信息获取成功");
-            map.put("teamList",teams);
+            map.put("teamList", teams);
         }
         return map;
     }

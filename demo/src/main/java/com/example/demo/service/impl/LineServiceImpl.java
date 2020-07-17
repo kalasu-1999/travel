@@ -87,53 +87,13 @@ public class LineServiceImpl implements LineService {
     }
 
     @Override
-    public List<Line> getLineByStartPlace(String startPlace) {
-        List<Line> lines = lineMapper.getLineByStartPlace(startPlace);
-        for (Line line : lines) {
-            String lineImage = line.getLineImage();
-            String imgPath = imgUtilService.getImgPath(lineImage);
-            line.setLineImage(imgPath);
-        }
-        return lines;
-    }
-
-    @Override
-    public List<Line> getLineByEndPlace(String endPlace) {
-        List<Line> lines = lineMapper.getLineByEndPlace(endPlace);
-        for (Line line : lines) {
-            String lineImage = line.getLineImage();
-            String imgPath = imgUtilService.getImgPath(lineImage);
-            line.setLineImage(imgPath);
-        }
-        return lines;
-    }
-
-    @Override
-    public List<Line> getLineByStartPlaceAndEndPlace(String startPlace, String endPlace) {
-        List<Line> lines = lineMapper.getLineByStartPlaceAndEndPlace(startPlace, endPlace);
-        for (Line line : lines) {
-            String lineImage = line.getLineImage();
-            String imgPath = imgUtilService.getImgPath(lineImage);
-            line.setLineImage(imgPath);
-        }
-        return lines;
-    }
-
-    @Override
-    public Line getLineByLineId(Integer lineId) {
-        Line line = lineMapper.selectByPrimaryKey(lineId);
-        line.setLineImage(imgUtilService.getImgPath(line.getLineImage()));
-        return line;
-    }
-
-    @Override
     public int updateLineByLineId(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String lineImage, String linePhone, Integer status, String djs, String bak, String weblog) {
         Line line = lineMapper.selectByPrimaryKey(lineId);
-        if (line == null){
+        if (line == null) {
             return -1;
         } else {
             String[] split = lineImage.split("/");
-            if (!split[split.length-1].equals(line.getLineImage())){
+            if (!split[split.length - 1].equals(line.getLineImage())) {
                 imgUtilService.deleteImg(line.getLineImage());
                 lineImage = imgUtilService.saveImg(lineImage);
             } else {
@@ -164,10 +124,15 @@ public class LineServiceImpl implements LineService {
                         weblog));
     }
 
+    //多条件查询
     @Override
-    public Line getLineByLineName(String lineName) {
-        Line line = lineMapper.selectLineByLineName(lineName);
-        line.setLineImage(imgUtilService.getImgPath(line.getLineImage()));
-        return line;
+    public List<Line> getLineByMore(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String linePhone, Integer status, String djs, String bak, String weblog) {
+        List<Line> lines = lineMapper.selectLineByMore(new Line(lineId, lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, null, linePhone, status, djs, bak, weblog));
+        for (Line line : lines) {
+            String lineImage = line.getLineImage();
+            String imgPath = imgUtilService.getImgPath(lineImage);
+            line.setLineImage(imgPath);
+        }
+        return lines;
     }
 }

@@ -98,39 +98,73 @@
     from line
   </select>
 
-  <!--List<Line> getLineByStartPlace(String startPlace);-->
-  <select id="getLineByStartPlace" resultMap="BaseResultMap">
+  <!--List<Line> selectLineByMore(Line record);-->
+  <select id="selectLineByMore" parameterType="com.example.demo.entity.Line" resultMap="BaseResultMap">
     select line_id, line_level, line_name, line_type, start_place, end_place, day, price1,
     price2, qp, dp, meet_place, meet_phone, go_transport, back_transport, line_image,
     line_phone, status, djs, bak, weblog
     from line
-    where start_place = #{startPlace}
-  </select>
-
-  <!--List<Line> getLineByEndPlace(String endPlace);-->
-  <select id="getLineByEndPlace" resultMap="BaseResultMap">
-    select line_id, line_level, line_name, line_type, start_place, end_place, day, price1,
-    price2, qp, dp, meet_place, meet_phone, go_transport, back_transport, line_image,
-    line_phone, status, djs, bak, weblog
-    from line
-    where end_place = #{endPlace}
-  </select>
-
-  <!--List<Line> getLineByStartPlaceAndEndPlace(String startPlace, String endPlace);-->
-  <select id="getLineByStartPlaceAndEndPlace" resultMap="BaseResultMap">
-    select line_id, line_level, line_name, line_type, start_place, end_place, day, price1,
-    price2, qp, dp, meet_place, meet_phone, go_transport, back_transport, line_image,
-    line_phone, status, djs, bak, weblog
-    from line
-    where start_place = #{startPlace} and end_place = #{endPlace}
-  </select>
-
-  <!--Line selectLineByLineName(String lineName);-->
-  <select id="selectLineByLineName" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select line_id, line_level, line_name, line_type, start_place, end_place, day, price1,
-    price2, qp, dp, meet_place, meet_phone, go_transport, back_transport, line_image,
-    line_phone, status, djs, bak, weblog
-    from line
-    where line_name = #{lineName,jdbcType=INTEGER}
+    <trim prefix="where" suffix="" prefixOverrides="" suffixOverrides="and">
+      <if test="lineId!=null">
+        line_id = #{lineId} and
+      </if>
+      <if test="lineLevel!=null and lineLevel!=''">
+        line_level = #{lineLevel} and
+      </if>
+      <if test="lineName!=null and lineName!=''">
+        line_name = #{lineName} and
+      </if>
+      <if test="lineType!=null and lineType!=''">
+        line_type = #{lineType} and
+      </if>
+      <if test="startPlace!=null and startPlace!=''">
+        start_place = #{startPlace} and
+      </if>
+      <if test="endPlace!=null and endPlace!=''">
+        end_place = #{endPlace} and
+      </if>
+      <if test="day!=null and day!=0">
+        day = #{day} and
+      </if>
+      <if test="price1!=null">
+        price1 = #{price1} and
+      </if>
+      <if test="price2!=null">
+        price2 = #{price2} and
+      </if>
+      <if test="qp!=null">
+        qp = #{qp} and
+      </if>
+      <if test="dp!=null">
+        dp = #{dp} and
+      </if>
+      <if test="meetPlace!=null and meetPlace!=''">
+        meet_place = #{meetPlace} and
+      </if>
+      <if test="meetPhone!=null and meetPhone!=''">
+        meet_phone = #{meetPhone} and
+      </if>
+      <if test="goTransport!=null and goTransport!=''">
+        go_transport = #{goTransport} and
+      </if>
+      <if test="backTransport!=null and backTransport!=''">
+        back_transport = #{backTransport} and
+      </if>
+      <if test="linePhone!=null and linePhone!=''">
+        line_phone = #{linePhone} and
+      </if>
+      <if test="status!=null">
+        status = #{status} and
+      </if>
+      <if test="djs!=null and djs!=''">
+        djs = #{djs} and
+      </if>
+      <if test="bak!=null and bak!=''">
+        bak like '%${bak}%' and
+      </if>
+      <if test="weblog!=null and weblog!=''">
+        weblog like '%${weblog}%' and
+      </if>
+    </trim>
   </select>
 </mapper>

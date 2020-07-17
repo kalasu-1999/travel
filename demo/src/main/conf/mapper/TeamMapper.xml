@@ -39,4 +39,30 @@
     select team_id, company_id, guide1, guide2, phone, bak
     from team
   </select>
+
+  <!--List<Team> selectTeamByMore(Team team);-->
+  <select id="selectTeamByMore" parameterType="com.example.demo.entity.Team" resultMap="BaseResultMap">
+    select team_id, company_id, guide1, guide2, phone, bak
+    from team
+    <trim prefix="where" suffix="" prefixOverrides="" suffixOverrides="and">
+      <if test="teamId!=null">
+        team_id = #{teamId} and
+      </if>
+      <if test="companyId!=null">
+        company_id = #{companyId} and
+      </if>
+      <if test="guide1!=null and guide1!=''">
+        guide1 = #{guide1} and
+      </if>
+      <if test="guide2!=null and guide2!=''">
+        guide2 = #{guide2} and
+      </if>
+      <if test="phone!=null and phone!=''">
+        phone = #{phone} and
+      </if>
+      <if test="bak!=null and bak!=''">
+        bak like '%${bak}%' and
+      </if>
+    </trim>
+  </select>
 </mapper>

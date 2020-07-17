@@ -13,4 +13,7 @@ public interface TeamMapper {
     List<Team> selectAll();
 
     int updateByPrimaryKey(Team record);
+
+    //多条件查询
+    List<Team> selectTeamByMore(Team team);
 }

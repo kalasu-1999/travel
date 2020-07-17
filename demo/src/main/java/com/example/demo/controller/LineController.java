@@ -84,76 +84,6 @@ public class LineController {
         return map;
     }
 
-    //根据起始站获取所有线路
-    @RequestMapping("/getLineByStartPlace")
-    public Map<String, Object> getLineByStartPlace(String startPlace, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
-        Map<String, Object> map = new HashMap<>();
-        PageHelper.startPage(page, size);
-        List<Line> lines = lineService.getLineByStartPlace(startPlace);
-        if (lines.size() == 0) {
-            map.put("code", -1);
-            map.put("msg", "路线信息获取失败或无相关起始站信息");
-        } else {
-            PageInfo<Line> lineList = new PageInfo<>(lines);
-            map.put("code", 0);
-            map.put("msg", "路线信息获取成功");
-            map.put("lineList", lineList);
-        }
-        return map;
-    }
-
-    //根据终点站获取所有路线
-    @RequestMapping("/getLineByEndPlace")
-    public Map<String, Object> getLineByEndPlace(String endPlace, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
-        Map<String, Object> map = new HashMap<>();
-        PageHelper.startPage(page, size);
-        List<Line> lines = lineService.getLineByEndPlace(endPlace);
-        if (lines.size() == 0) {
-            map.put("code", -1);
-            map.put("msg", "路线信息获取失败或无相关终点站信息");
-        } else {
-            PageInfo<Line> lineList = new PageInfo<>(lines);
-            map.put("code", 0);
-            map.put("msg", "路线信息获取成功");
-            map.put("lineList", lineList);
-        }
-        return map;
-    }
-
-    //根据起始站和终点站获取所有路线
-    @RequestMapping("/getLineByStartPlaceAndEndPlace")
-    public Map<String, Object> getLineByStartPlaceAndEndPlace(String startPlace, String endPlace, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
-        Map<String, Object> map = new HashMap<>();
-        PageHelper.startPage(page, size);
-        List<Line> lines = lineService.getLineByStartPlaceAndEndPlace(startPlace, endPlace);
-        if (lines.size() == 0) {
-            map.put("code", -1);
-            map.put("msg", "路线信息获取失败或无相关路线信息");
-        } else {
-            PageInfo<Line> lineList = new PageInfo<>(lines);
-            map.put("code", 0);
-            map.put("msg", "路线信息获取成功");
-            map.put("lineList", lineList);
-        }
-        return map;
-    }
-
-    //根据路线id获取路线
-    @RequestMapping("/getLineByLineId")
-    public Map<String, Object> getLineByLineId(Integer lineId) {
-        Map<String, Object> map = new HashMap<>();
-        Line line = lineService.getLineByLineId(lineId);
-        if (line != null) {
-            map.put("code", 0);
-            map.put("msg", "线路信息获取成功");
-            map.put("line", line);
-        } else {
-            map.put("code", -1);
-            map.put("msg", "路线信息获取失败");
-        }
-        return map;
-    }
-
     //根据路线id路线信息修改
     @RequestMapping("/updateLineByLineId")
     public Map<String, Object> updateLineByLineId(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String lineImage, String linePhone, Integer status, String djs, String bak, String weblog) {
@@ -168,19 +98,22 @@ public class LineController {
         return map;
     }
 
-    //根据路线名称获取路线
-    @RequestMapping("/getLineByLineName")
-    public Map<String, Object> getLineByLineName(String lineName) {
+    //多条件查询
+    @RequestMapping("/getLineByMore")
+    public Map<String, Object> getLineByMore(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String linePhone, Integer status, String djs, String bak, String weblog, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
         Map<String, Object> map = new HashMap<>();
-        Line line = lineService.getLineByLineName(lineName);
-        if (line != null) {
-            map.put("code", 0);
-            map.put("msg", "线路信息获取成功");
-            map.put("line", line);
-        } else {
+        PageHelper.startPage(page, size);
+        List<Line> lines = lineService.getLineByMore(lineId, lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, linePhone, status, djs, bak, weblog);
+        if (lines.size() == 0) {
             map.put("code", -1);
-            map.put("msg", "路线信息获取失败");
+            map.put("msg", "路线信息获取失败或未找到符合条件的路线");
+        } else {
+            PageInfo<Line> lineList = new PageInfo<>(lines);
+            map.put("code", 0);
+            map.put("msg", "路线信息获取成功");
+            map.put("lineList", lineList);
         }
         return map;
     }
+
 }
