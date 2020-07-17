@@ -42,4 +42,18 @@
     from views
     where view_name like '%${hint}%' or content like '%${hint}%'
   </select>
+
+  <!--Views selectViewsByViewIdAndViewName(Views record);-->
+  <select id="selectViewsByViewIdAndViewName" parameterType="com.example.demo.entity.Views" resultMap="BaseResultMap">
+    select view_id, view_name, view_image, content
+    from views
+    <trim prefix="where" suffix="" prefixOverrides="" suffixOverrides="and">
+      <if test="viewId!=null">
+        view_id = #{viewId} and
+      </if>
+      <if test="viewName!=null and viewName!=''">
+        view_name = #{viewName} and
+      </if>
+    </trim>
+  </select>
 </mapper>

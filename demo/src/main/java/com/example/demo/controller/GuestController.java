@@ -97,7 +97,7 @@ public class GuestController {
             GuestInfo guestInfo = guestService.selectGuestInfoByGuestId(guest.getGuestId());
             map.put("code", 0);
             map.put("msg", "用户信息获取成功");
-            map.put("guestInfo", guestInfo);
+            map.put("data", guestInfo);
         } else {
             map.put("code", -1);
             map.put("msg", "从token获取用户信息失败");
@@ -162,7 +162,7 @@ public class GuestController {
         if (guest != null) {
             map.put("code", 0);
             map.put("msg", "获取用户信息成功");
-            map.put("username", guest.getName());
+            map.put("data", guest.getName());
         } else {
             map.put("code", -2);
             map.put("msg", "从token获取用户信息失败");

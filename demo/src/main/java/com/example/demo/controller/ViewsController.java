@@ -1,6 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.Line;
 import com.example.demo.entity.Views;
+import com.example.demo.service.LineService;
+import com.example.demo.service.ViewLineService;
 import com.example.demo.service.ViewsService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +22,10 @@ import java.util.Map;
 public class ViewsController {
     @Autowired
     private ViewsService viewsService;
+    @Autowired
+    private ViewLineService viewLineService;
+    @Autowired
+    private LineService lineService;
 
     //添加景点
     @RequestMapping("/insertViews")
@@ -55,7 +63,7 @@ public class ViewsController {
         if (views != null) {
             map.put("code", 0);
             map.put("msg", "景点信息获取成功");
-            map.put("view", views);
+            map.put("data", views);
         } else {
             map.put("code", -1);
             map.put("msg", "景点信息获取失败");
@@ -73,7 +81,7 @@ public class ViewsController {
             PageInfo<Views> viewList = new PageInfo<>(views);
             map.put("code", 0);
             map.put("msg", "景点信息获取成功");
-            map.put("viewList", viewList);
+            map.put("data", viewList);
         } else {
             map.put("code", -1);
             map.put("msg", "景点信息获取失败");
@@ -91,7 +99,7 @@ public class ViewsController {
             PageInfo<Views> viewList = new PageInfo<>(views);
             map.put("code", 0);
             map.put("msg", "景点信息获取成功");
-            map.put("viewList", viewList);
+            map.put("data", viewList);
         } else {
             map.put("code", -1);
             map.put("msg", "景点信息获取失败");
@@ -112,4 +120,25 @@ public class ViewsController {
         }
         return map;
     }
+
+    //根据指定的景点id获取全部线路
+    @RequestMapping("/selectAllLine")
+    public Map<String, Object> selectAllLine(Integer viewId) {
+        Map<String, Object> map = new HashMap<>();
+        List<Integer> lineIds = viewLineService.selectAllLine(viewId);
+        if (lineIds.size() == 0){
+            map.put("code",-1);
+            map.put("msg","数据获取失败或未获取到数据");
+        } else {
+            List<Line> lineList = new ArrayList<>();
+            for (Integer lineId : lineIds) {
+                lineList.add(lineService.selectLineByLineId(lineId));
+            }
+            map.put("code", 0);
+            map.put("msg", "数据获取成功");
+            map.put("data",lineList);
+        }
+        return map;
+    }
+
 }

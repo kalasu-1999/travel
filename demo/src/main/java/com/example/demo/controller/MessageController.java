@@ -56,7 +56,7 @@ public class MessageController {
         } else {
             map.put("code", 0);
             map.put("msg", "留言信息获取成功");
-            map.put("messageList", messages);
+            map.put("data", messages);
         }
         return map;
     }
@@ -93,7 +93,7 @@ public class MessageController {
             } else {
                 map.put("code", 0);
                 map.put("msg", "留言信息获取成功");
-                map.put("messageList", messages);
+                map.put("data", messages);
             }
         }
         return map;

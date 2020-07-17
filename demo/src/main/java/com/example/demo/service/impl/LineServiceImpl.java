@@ -135,4 +135,10 @@ public class LineServiceImpl implements LineService {
         }
         return lines;
     }
+
+    //根据id获取
+    @Override
+    public Line selectLineByLineId(Integer lineId) {
+        return lineMapper.selectByPrimaryKey(lineId);
+    }
 }

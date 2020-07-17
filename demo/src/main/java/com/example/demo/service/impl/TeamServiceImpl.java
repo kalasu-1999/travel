@@ -22,8 +22,8 @@ public class TeamServiceImpl implements TeamService {
 
     //多条件查询
     @Override
-    public Page<Team> selectTeamByMore(Integer teamId, Integer companyId, String guide1, String guide2, String phone, String bak) {
-        return (Page<Team>) teamMapper.selectTeamByMore(new Team(teamId, companyId, guide1, guide2, phone, bak));
+    public List<Team> selectTeamByMore(Integer teamId, Integer companyId, String guide1, String guide2, String phone, String bak) {
+        return teamMapper.selectTeamByMore(new Team(teamId, companyId, guide1, guide2, phone, bak));
     }
 
     //根据旅行团id修改旅行团信息
@@ -36,5 +36,10 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public int insertTeam(String guide1, String guide2, String phone, String bak) {
         return teamMapper.insert(new Team(null, 1, guide1, guide2, phone, bak));
+    }
+
+    @Override
+    public Team selectTeamByTeamId(Integer teamId) {
+        return teamMapper.selectByPrimaryKey(teamId);
     }
 }

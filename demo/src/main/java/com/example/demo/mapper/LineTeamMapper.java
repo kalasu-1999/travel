@@ -13,4 +13,10 @@ public interface LineTeamMapper {
     List<LineTeam> selectAll();
 
     int updateByPrimaryKey(LineTeam record);
+
+    //修改人数
+    int addPeople(LineTeam record);
+
+    //多条件查询
+    List<LineTeam> selectLineTeamByMore(LineTeam record);
 }

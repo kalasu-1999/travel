@@ -13,4 +13,10 @@ public interface LineViewsMapper {
     List<LineViews> selectAll();
 
     int updateByPrimaryKey(LineViews record);
+
+    //根据指定的景点id获取全部线路id
+    List<Integer> selectAllLine(Integer viewId);
+
+    //根据指定的线路id获取全部景点id
+    List<Integer> selectAllView(Integer lineId);
 }

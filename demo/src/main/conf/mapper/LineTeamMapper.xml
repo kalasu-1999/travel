@@ -43,4 +43,42 @@
     select lineTeam_id, team_id, line_id, go_date, back_date, adult, child
     from lineTeam
   </select>
+
+  <!--int addPeople(LineTeam record);-->
+  <update id="addPeople" parameterType="com.example.demo.entity.LineTeam">
+    update lineTeam
+    set
+      adult = adult + #{adult,jdbcType=INTEGER},
+      child = child + #{child,jdbcType=INTEGER}
+    where lineTeam_id = #{lineteamId,jdbcType=INTEGER}
+  </update>
+
+  <!--List<LineTeam> selectLineTeamByMore(LineTeam record);-->
+  <select id="selectLineTeamByMore" resultMap="BaseResultMap">
+    select lineTeam_id, team_id, line_id, go_date, back_date, adult, child
+    from lineTeam
+    <trim prefix="where" suffix="" prefixOverrides="" suffixOverrides="and">
+      <if test="lineteamId!=null">
+        lineTeam_id = #{lineteamId} and
+      </if>
+      <if test="teamId!=null">
+        team_id = #{teamId} and
+      </if>
+      <if test="lineId!=null">
+        line_id = #{lineId} and
+      </if>
+      <if test="goDate!=null">
+        go_date >= #{goDate} and
+      </if>
+      <if test="backDate!=null">
+        back_date &lt;= #{backDate} and
+      </if>
+      <if test="adult!=null">
+        adult &lt;= #{adult} and
+      </if>
+      <if test="child!=null">
+        child &lt;= #{child} and
+      </if>
+    </trim>
+  </select>
 </mapper>

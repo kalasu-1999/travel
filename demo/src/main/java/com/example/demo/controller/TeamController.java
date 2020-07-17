@@ -6,12 +6,14 @@ import com.example.demo.service.CompanyInfoService;
 import com.example.demo.service.TeamService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -30,7 +32,7 @@ public class TeamController {
         if (companyInfo != null) {
             map.put("code", 0);
             map.put("msg", "公司信息获取成功");
-            map.put("companyInfo", companyInfo);
+            map.put("data", companyInfo);
         } else {
             map.put("code", -1);
             map.put("msg", "公司信息获取失败");
@@ -43,14 +45,15 @@ public class TeamController {
     public Map<String, Object> selectTeamByMore(Integer teamId, Integer companyId, String guide1, String guide2, String phone, String bak, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
         Map<String, Object> map = new HashMap<>();
         PageHelper.startPage(page, size);
-        Page<Team> teams = teamService.selectTeamByMore(teamId, companyId, guide1, guide2, phone, bak);
+        List<Team> teams = teamService.selectTeamByMore(teamId, companyId, guide1, guide2, phone, bak);
         if (teams.isEmpty()) {
             map.put("code", -1);
             map.put("msg", "旅行团信息获取失败或未能找到符合的旅行团");
         } else {
+            PageInfo<Team> teamList = new PageInfo<>(teams);
             map.put("code", 0);
             map.put("msg", "旅行团信息获取成功");
-            map.put("teamList", teams);
+            map.put("data", teamList);
         }
         return map;
     }
@@ -95,7 +98,23 @@ public class TeamController {
         } else {
             map.put("code", 0);
             map.put("msg", "旅行团信息获取成功");
-            map.put("teamList", teams);
+            map.put("data", teams);
+        }
+        return map;
+    }
+
+    //根据id获取信息
+    @RequestMapping("/selectTeamByTeamId")
+    public Map<String, Object> selectTeamByTeamId(Integer teamId) {
+        Map<String, Object> map = new HashMap<>();
+        Team team = teamService.selectTeamByTeamId(teamId);
+        if (team == null) {
+            map.put("code", -1);
+            map.put("msg", "旅行团信息获取失败");
+        } else {
+            map.put("code", 0);
+            map.put("msg", "旅行团信息获取成功");
+            map.put("data", team);
         }
         return map;
     }

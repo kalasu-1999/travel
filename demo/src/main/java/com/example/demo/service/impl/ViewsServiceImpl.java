@@ -67,11 +67,16 @@ public class ViewsServiceImpl implements com.example.demo.service.ViewsService {
     @Override
     public int deleteViewsByViewId(Integer viewId) {
         Views views = viewsMapper.selectByPrimaryKey(viewId);
-        if (views == null){
+        if (views == null) {
             return -1;
         } else {
             imgUtilService.deleteImg(views.getViewImage());
             return viewsMapper.deleteByPrimaryKey(viewId);
         }
+    }
+
+    @Override
+    public Views selectViewsByViewIdAndViewName(Integer viewId, String viewName) {
+        return viewsMapper.selectViewsByViewIdAndViewName(new Views(viewId, viewName, null, null));
     }
 }

@@ -43,7 +43,7 @@
   <!--int updateFlagByNewsId(Integer newsId);-->
   <update id="updateFlagByNewsId" parameterType="com.example.demo.entity.News">
     update news
-    set delfig = #{delfig,jdbcType=VARCHAR}
+    set delfig = '1'
     where news_id = #{newsId,jdbcType=INTEGER}
   </update>
 

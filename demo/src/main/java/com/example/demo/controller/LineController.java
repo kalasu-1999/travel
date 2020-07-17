@@ -1,7 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Line;
+import com.example.demo.entity.Views;
 import com.example.demo.service.LineService;
+import com.example.demo.service.ViewLineService;
+import com.example.demo.service.ViewsService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +23,10 @@ import java.util.Map;
 public class LineController {
     @Autowired
     private LineService lineService;
+    @Autowired
+    private ViewLineService viewLineService;
+    @Autowired
+    private ViewsService viewsService;
 
     //添加路线
     @RequestMapping("/insertLine")
@@ -45,7 +53,7 @@ public class LineController {
         } else {
             map.put("code", 0);
             map.put("msg", "路线起始站信息获取成功");
-            map.put("startPlaceList", allStartPlace);
+            map.put("data", allStartPlace);
         }
         return map;
     }
@@ -61,7 +69,7 @@ public class LineController {
         } else {
             map.put("code", 0);
             map.put("msg", "路线终点站信息获取成功");
-            map.put("endPlaceList", allEndPlace);
+            map.put("data", allEndPlace);
         }
         return map;
     }
@@ -79,7 +87,7 @@ public class LineController {
             PageInfo<Line> lineList = new PageInfo<>(lines);
             map.put("code", 0);
             map.put("msg", "路线信息获取成功");
-            map.put("lineList", lineList);
+            map.put("data", lineList);
         }
         return map;
     }
@@ -98,6 +106,22 @@ public class LineController {
         return map;
     }
 
+    //根据id获取
+    @RequestMapping("/selectLineByLineId")
+    public Map<String, Object> selectLineByLineId(Integer lineId) {
+        Map<String, Object> map = new HashMap<>();
+        Line line = lineService.selectLineByLineId(lineId);
+        if (line != null) {
+            map.put("code", 0);
+            map.put("msg", "线路信息获取成功");
+            map.put("data", line);
+        } else {
+            map.put("code", -1);
+            map.put("msg", "路线信息获取失败");
+        }
+        return map;
+    }
+
     //多条件查询
     @RequestMapping("/getLineByMore")
     public Map<String, Object> getLineByMore(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String linePhone, Integer status, String djs, String bak, String weblog, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
@@ -111,7 +135,27 @@ public class LineController {
             PageInfo<Line> lineList = new PageInfo<>(lines);
             map.put("code", 0);
             map.put("msg", "路线信息获取成功");
-            map.put("lineList", lineList);
+            map.put("data", lineList);
+        }
+        return map;
+    }
+
+    //根据指定的线路id获取全部景点
+    @RequestMapping("/selectAllView")
+    public Map<String, Object> selectAllView(Integer lineId) {
+        Map<String, Object> map = new HashMap<>();
+        List<Integer> viewIds = viewLineService.selectAllView(lineId);
+        if (viewIds.size() == 0) {
+            map.put("code", -1);
+            map.put("msg", "数据获取失败或未获取到数据");
+        } else {
+            List<Views> viewsList = new ArrayList<>();
+            for (Integer viewId : viewIds) {
+                viewsList.add(viewsService.selectViewsByViewId(viewId));
+            }
+            map.put("code", 0);
+            map.put("msg", "数据获取成功");
+            map.put("data", viewsList);
         }
         return map;
     }

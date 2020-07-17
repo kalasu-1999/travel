@@ -31,7 +31,7 @@ public class NewsController {
         } else {
             map.put("code", 0);
             map.put("msg", "新闻信息获取成功");
-            map.put("newsList", news);
+            map.put("data", news);
         }
         return map;
     }
@@ -76,7 +76,7 @@ public class NewsController {
         } else {
             map.put("code", 0);
             map.put("msg", "新闻信息获取成功");
-            map.put("newsList", news);
+            map.put("data", news);
         }
         return map;
     }

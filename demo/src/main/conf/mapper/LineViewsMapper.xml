@@ -33,4 +33,18 @@
     select lineViews_id, line_id, view_id
     from lineViews
   </select>
+
+  <!--List<Integer> selectAllLine(Integer viewId);-->
+  <select id="selectAllLine" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select lineViews_id, line_id, view_id
+    from lineViews
+    where view_id = #{viewId}
+  </select>
+
+  <!--List<Integer> selectAllView(Integer lineId);-->
+  <select id="selectAllView" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select lineViews_id, line_id, view_id
+    from lineViews
+    where line_id = #{lineId}
+  </select>
 </mapper>
