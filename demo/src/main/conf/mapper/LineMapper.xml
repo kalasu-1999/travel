@@ -174,7 +174,7 @@
   <update id="updateLineState" parameterType="com.example.demo.entity.Line">
     update line
     set
-      stats = #{status,jdbcType=INTEGER}
+      status = #{state,jdbcType=INTEGER}
     where line_id = #{lineId,jdbcType=INTEGER}
   </update>
 </mapper>
