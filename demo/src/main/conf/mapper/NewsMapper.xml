@@ -5,7 +5,7 @@
     <constructor>
       <idArg column="news_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="title" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="show" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="shows" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="delfig" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
@@ -15,7 +15,7 @@
     where news_id = #{newsId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.demo.entity.News">
-    insert into news (news_id, title, show,
+    insert into news (news_id, title, shows,
       time, delfig)
     values (#{newsId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{show,jdbcType=VARCHAR}, 
       #{time,jdbcType=TIMESTAMP}, #{delfig,jdbcType=VARCHAR})
@@ -23,18 +23,18 @@
   <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.News">
     update news
     set title = #{title,jdbcType=VARCHAR},
-      show = #{show,jdbcType=VARCHAR},
+      shows = #{show,jdbcType=VARCHAR},
       time = #{time,jdbcType=TIMESTAMP},
       delfig = #{delfig,jdbcType=VARCHAR}
     where news_id = #{newsId,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select news_id, title, show, time, delfig
+    select news_id, title, shows, time, delfig
     from news
     where news_id = #{newsId,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select news_id, title, show, time, delfig
+    select news_id, title, shows, time, delfig
     from news
     where delfig = '0'
     order by time desc
@@ -49,9 +49,9 @@
 
   <!--List<News> selectNewsByHint(String hint);-->
   <select id="selectNewsByHint" resultMap="BaseResultMap">
-    select news_id, title, show, time, delfig
+    select news_id, title, shows, time, delfig
     from news
-    where delfig = '0' and (title like '%${hint}%' or show like '%${hint}%')
+    where delfig = '0' and (title like '%${hint}%' or shows like '%${hint}%')
     order by time desc
   </select>
 </mapper>
