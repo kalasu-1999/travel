@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Line;
+import com.example.demo.entity.LineViews;
 import com.example.demo.entity.Views;
+import com.example.demo.service.ImgUtilService;
 import com.example.demo.service.LineService;
 import com.example.demo.service.ViewLineService;
 import com.example.demo.service.ViewsService;
@@ -19,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/line")
+@RequestMapping("/api/line")
 public class LineController {
     @Autowired
     private LineService lineService;
@@ -27,6 +29,8 @@ public class LineController {
     private ViewLineService viewLineService;
     @Autowired
     private ViewsService viewsService;
+    @Autowired
+    private ImgUtilService imgUtilService;
 
     //添加路线
     @RequestMapping("/insertLine")
@@ -144,14 +148,21 @@ public class LineController {
     @RequestMapping("/selectAllView")
     public Map<String, Object> selectAllView(Integer lineId) {
         Map<String, Object> map = new HashMap<>();
-        List<Integer> viewIds = viewLineService.selectAllView(lineId);
-        if (viewIds.size() == 0) {
+        List<LineViews> lineViews = viewLineService.selectAllView(lineId);
+        if (lineViews.size() == 0) {
             map.put("code", -1);
             map.put("msg", "数据获取失败或未获取到数据");
         } else {
-            List<Views> viewsList = new ArrayList<>();
-            for (Integer viewId : viewIds) {
-                viewsList.add(viewsService.selectViewsByViewId(viewId));
+            List<Map<String,Object>> viewsList = new ArrayList<>();
+            for (LineViews lineView : lineViews) {
+                Views views = viewsService.selectViewsByViewId(lineView.getViewId());
+                Map<String,Object> m = new HashMap<>();
+                m.put("viewId",views.getViewId());
+                m.put("viewName",views.getViewName());
+                m.put("viewImage",imgUtilService.getImgPath(views.getViewImage()));
+                m.put("content",views.getContent());
+                m.put("lineViewsId",lineView.getLineviewsId());
+                viewsList.add(m);
             }
             map.put("code", 0);
             map.put("msg", "数据获取成功");

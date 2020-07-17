@@ -81,4 +81,45 @@
       </if>
     </trim>
   </select>
+
+  <!--List<LineTeam> selectByTables(Integer teamId, String bak, Integer lineTeamId, Date goDate, Integer lineId, String lineName, String startPlace, String endPlace, Integer viewId, String viewName);-->
+  <select id="selectByTables" resultMap="BaseResultMap">
+    select distinct lt.lineTeam_id, lt.team_id, lt.line_id, go_date, back_date, adult, child
+    from line l left join lineTeam lt on l.line_id = lt.line_id
+    left join team t on lt.team_id = t.team_id
+    left join lineViews lv on l.line_id = lv.line_id
+    left join views v on lv.view_id = v.view_id
+    <trim prefix="where" suffix="" prefixOverrides="" suffixOverrides="and">
+      <if test="teamId!=null">
+        t.team_id = #{teamId} and
+      </if>
+      <if test="bak!=null and bak!=''">
+        t.bak = #{bak} and
+      </if>
+      <if test="lineTeamId!=null">
+        lt.lineTeam_id = #{lineTeamId} and
+      </if>
+      <if test="goDate!=null">
+        lt.go_date >= #{goDate} and
+      </if>
+      <if test="lineId!=null">
+        l.line_id = #{lineId} and
+      </if>
+      <if test="lineName!=null and lineName!=''">
+        l.line_name = #{lineName} and
+      </if>
+      <if test="startPlace!=null and startPlace!=''">
+        l.start_place = #{startPlace} and
+      </if>
+      <if test="endPlace!=null and endPlace!=''">
+        l.end_place = #{endPlace} and
+      </if>
+      <if test="viewId!=null">
+        v.view_id = #{viewId} and
+      </if>
+      <if test="viewName!=null and viewName!=''">
+        v.view_name = #{viewName} and
+      </if>
+    </trim>
+  </select>
 </mapper>

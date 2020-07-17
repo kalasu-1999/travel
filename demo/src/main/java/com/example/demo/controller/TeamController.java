@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/team")
+@RequestMapping("/api/team")
 public class TeamController {
     @Autowired
     private CompanyInfoService companyInfoService;

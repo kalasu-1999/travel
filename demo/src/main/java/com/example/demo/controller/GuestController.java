@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/guest")
+@RequestMapping("/api/guest")
 public class GuestController {
     @Autowired
     private GuestService guestService;

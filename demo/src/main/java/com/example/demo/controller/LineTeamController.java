@@ -1,9 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Line;
-import com.example.demo.entity.LineTeam;
-import com.example.demo.entity.Team;
-import com.example.demo.entity.Views;
+import com.example.demo.entity.*;
 import com.example.demo.service.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -15,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
 @RestController
-@RequestMapping("/lineTeam")
+@RequestMapping("/api/lineTeam")
 public class LineTeamController {
     @Autowired
     private LineTeamService lineTeamService;
@@ -27,6 +24,8 @@ public class LineTeamController {
     private ViewLineService viewLineService;
     @Autowired
     private ViewsService viewsService;
+    @Autowired
+    private ImgUtilService imgUtilService;
 
     //添加路线-旅行团对应信息
     @RequestMapping("/insertLineTeam")
@@ -69,16 +68,23 @@ public class LineTeamController {
             for (LineTeam lineTeam : lineTeams) {
                 Map<String, Object> m = new HashMap<>();
                 Line line = lineService.selectLineByLineId(lineTeam.getLineId());
-                List<Integer> viewIds = viewLineService.selectAllView(line.getLineId());
-                List<Views> viewsList = new ArrayList<>();
-                for (Integer viewId : viewIds) {
-                    viewsList.add(viewsService.selectViewsByViewId(viewId));
+                List<LineViews> lineViews = viewLineService.selectAllView(line.getLineId());
+                List<Map<String, Object>> viewsList = new ArrayList<>();
+                for (LineViews lineView : lineViews) {
+                    Views views = viewsService.selectViewsByViewId(lineView.getViewId());
+                    Map<String, Object> t = new HashMap<>();
+                    t.put("viewId", views.getViewId());
+                    t.put("viewName", views.getViewName());
+                    t.put("viewImage", imgUtilService.getImgPath(views.getViewImage()));
+                    t.put("content", views.getContent());
+                    t.put("lineViewsId", lineView.getLineviewsId());
+                    viewsList.add(t);
                 }
                 Team team = teamService.selectTeamByTeamId(lineTeam.getTeamId());
                 m.put("line", line);
                 m.put("team", team);
                 m.put("lineTeam", lineTeam);
-                m.put("viewsList",viewsList);
+                m.put("viewsList", viewsList);
                 list.add(m);
             }
             PageHelper.startPage(page, size);
@@ -90,17 +96,13 @@ public class LineTeamController {
         return map;
     }
 
-    //多条件查询
-    @RequestMapping("/selectByMore")
-    public Map<String, Object> selectByMore(Integer teamId, String bak, Integer lineTeamId, Date goDate, Integer lineId, String lineName, String startPlace, String endPlace,Integer viewId,String viewName, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
-        Map<String, Object> map = new HashMap<>();
-        List<Map<String, Object>> list = new ArrayList<>();
-        List<Team> teams = teamService.selectTeamByMore(teamId, null, null, null, null, bak);
-        List<LineTeam> lineTeams = lineTeamService.selectLineTeamByMore(lineTeamId, null, null, goDate, null, null, null);
-        List<Line> lines = lineService.getLineByMore(lineId, null, lineName, null, startPlace, endPlace, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-        Views views = viewsService.selectViewsByViewIdAndViewName(viewId, viewName);
-
-        return map;
-    }
+//    //多条件查询
+//    @RequestMapping("/selectByMore")
+//    public Map<String, Object> selectByMore(Integer teamId, String bak, Integer lineTeamId, Date goDate, Integer lineId, String lineName, String startPlace, String endPlace, Integer viewId, String viewName, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
+//
+//
+//
+//        return map;
+//    }
 
 }

@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.LineViews;
+
 import java.util.List;
 
 public interface ViewLineService {
@@ -13,8 +15,8 @@ public interface ViewLineService {
     int deleteViewLine(Integer lineviewsId);
 
     //根据指定的景点id获取全部线路id
-    List<Integer> selectAllLine(Integer viewId);
+    List<LineViews> selectAllLine(Integer viewId);
 
     //根据指定的线路id获取全部景点id
-    List<Integer> selectAllView(Integer lineId);
+    List<LineViews> selectAllView(Integer lineId);
 }

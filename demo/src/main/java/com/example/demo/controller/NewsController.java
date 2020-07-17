@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/news")
+@RequestMapping("/api/news")
 public class NewsController {
     @Autowired
     private NewsService newsService;

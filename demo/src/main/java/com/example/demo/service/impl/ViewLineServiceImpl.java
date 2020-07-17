@@ -29,12 +29,12 @@ public class ViewLineServiceImpl implements ViewLineService {
     }
 
     @Override
-    public List<Integer> selectAllLine(Integer viewId) {
+    public List<LineViews> selectAllLine(Integer viewId) {
         return lineViewsMapper.selectAllLine(viewId);
     }
 
     @Override
-    public List<Integer> selectAllView(Integer lineId) {
+    public List<LineViews> selectAllView(Integer lineId) {
         return lineViewsMapper.selectAllView(lineId);
     }
 }

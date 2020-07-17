@@ -38,4 +38,9 @@ public class LineTeamServiceImpl implements LineTeamService {
     public List<LineTeam> selectLineTeamByMore(Integer lineteamId, Integer teamId, Integer lineId, Date goDate, Date backDate, Integer adult, Integer child) {
         return lineTeamMapper.selectLineTeamByMore(new LineTeam(lineteamId, teamId, lineId, goDate, backDate, adult, child));
     }
+
+    @Override
+    public List<LineTeam> selectByTables(Integer teamId, String bak, Integer lineTeamId, Date goDate, Integer lineId, String lineName, String startPlace, String endPlace, Integer viewId, String viewName) {
+        return null;
+    }
 }

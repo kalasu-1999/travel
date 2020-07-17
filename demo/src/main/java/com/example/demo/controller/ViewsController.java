@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Line;
+import com.example.demo.entity.LineViews;
 import com.example.demo.entity.Views;
 import com.example.demo.service.LineService;
 import com.example.demo.service.ViewLineService;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("views")
+@RequestMapping("/api/views")
 public class ViewsController {
     @Autowired
     private ViewsService viewsService;
@@ -125,14 +126,38 @@ public class ViewsController {
     @RequestMapping("/selectAllLine")
     public Map<String, Object> selectAllLine(Integer viewId) {
         Map<String, Object> map = new HashMap<>();
-        List<Integer> lineIds = viewLineService.selectAllLine(viewId);
-        if (lineIds.size() == 0){
+        List<LineViews> lineViews = viewLineService.selectAllLine(viewId);
+        if (lineViews.size() == 0){
             map.put("code",-1);
             map.put("msg","数据获取失败或未获取到数据");
         } else {
-            List<Line> lineList = new ArrayList<>();
-            for (Integer lineId : lineIds) {
-                lineList.add(lineService.selectLineByLineId(lineId));
+            List<Map<String,Object>> lineList = new ArrayList<>();
+            for (LineViews lineView : lineViews) {
+                Line line = lineService.selectLineByLineId(lineView.getLineId());
+                Map<String,Object> m = new HashMap<>();
+                m.put("lineViewsId",lineView.getLineviewsId());
+                m.put("lineId",line.getLineId());
+                m.put("lineLevel",line.getLineLevel());
+                m.put("lineName",line.getLineName());
+                m.put("lineType",line.getLineType());
+                m.put("startPlace",line.getStartPlace());
+                m.put("endPlace",line.getEndPlace());
+                m.put("day",line.getDay());
+                m.put("price1",line.getPrice1());
+                m.put("price2",line.getPrice2());
+                m.put("qp",line.getQp());
+                m.put("dp",line.getDp());
+                m.put("meetPlace",line.getMeetPlace());
+                m.put("meetPhone",line.getMeetPhone());
+                m.put("goTransport",line.getGoTransport());
+                m.put("backTransport",line.getBackTransport());
+                m.put("lineImage",line.getLineImage());
+                m.put("linePhone",line.getLinePhone());
+                m.put("status",line.getStatus());
+                m.put("djs",line.getDjs());
+                m.put("bak",line.getBak());
+                m.put("weblog",line.getWeblog());
+                lineList.add(m);
             }
             map.put("code", 0);
             map.put("msg", "数据获取成功");
