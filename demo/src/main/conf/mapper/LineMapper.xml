@@ -9,7 +9,7 @@
       <arg column="line_type" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="start_place" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="end_place" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="day" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="days" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="price1" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="price2" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="qp" javaType="java.lang.Integer" jdbcType="INTEGER" />
@@ -33,7 +33,7 @@
   <insert id="insert" parameterType="com.example.demo.entity.Line">
     insert into line (line_id, line_level, line_name,
       line_type, start_place, end_place, 
-      day, price1, price2, 
+      days, price1, price2,
       qp, dp, meet_place, 
       meet_phone, go_transport, back_transport, 
       line_image, line_phone, status, 
@@ -55,7 +55,7 @@
       line_type = #{lineType,jdbcType=VARCHAR},
       start_place = #{startPlace,jdbcType=VARCHAR},
       end_place = #{endPlace,jdbcType=VARCHAR},
-      day = #{day,jdbcType=INTEGER},
+      days = #{day,jdbcType=INTEGER},
       price1 = #{price1,jdbcType=DECIMAL},
       price2 = #{price2,jdbcType=DECIMAL},
       qp = #{qp,jdbcType=INTEGER},
@@ -73,14 +73,14 @@
     where line_id = #{lineId,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select line_id, line_level, line_name, line_type, start_place, end_place, day, price1, 
+    select line_id, line_level, line_name, line_type, start_place, end_place, days, price1,
     price2, qp, dp, meet_place, meet_phone, go_transport, back_transport, line_image, 
     line_phone, status, djs, bak, weblog
     from line
     where line_id = #{lineId,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select line_id, line_level, line_name, line_type, start_place, end_place, day, price1, 
+    select line_id, line_level, line_name, line_type, start_place, end_place, days, price1,
     price2, qp, dp, meet_place, meet_phone, go_transport, back_transport, line_image, 
     line_phone, status, djs, bak, weblog
     from line
@@ -100,7 +100,7 @@
 
   <!--List<Line> selectLineByMore(Line record);-->
   <select id="selectLineByMore" parameterType="com.example.demo.entity.Line" resultMap="BaseResultMap">
-    select line_id, line_level, line_name, line_type, start_place, end_place, day, price1,
+    select line_id, line_level, line_name, line_type, start_place, end_place, days, price1,
     price2, qp, dp, meet_place, meet_phone, go_transport, back_transport, line_image,
     line_phone, status, djs, bak, weblog
     from line
@@ -124,7 +124,7 @@
         end_place = #{endPlace} and
       </if>
       <if test="day!=null and day!=0">
-        day = #{day} and
+        days = #{day} and
       </if>
       <if test="price1!=null">
         price1 = #{price1} and

@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.example.demo.entity.Guest">
     <constructor>
       <idArg column="guest_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="username" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="password" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="flag" javaType="java.lang.Integer" jdbcType="INTEGER" />
     </constructor>
@@ -16,47 +16,47 @@
   </delete>
 
   <insert id="insert" parameterType="com.example.demo.entity.Guest" useGeneratedKeys="true" keyProperty="guestId">
-    insert into guest (guest_id, name, password, flag)
+    insert into guest (guest_id, username, password, flag)
     values (#{guestId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{flag,jdbcType=INTEGER})
   </insert>
 
   <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.Guest">
     update guest
-    set name = #{name,jdbcType=VARCHAR},
+    set username = #{name,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       flag = #{flag,jdbcType=INTEGER}
     where guest_id = #{guestId,jdbcType=INTEGER}
   </update>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select guest_id, name, password, flag
+    select guest_id, username, password, flag
     from guest
     where guest_id = #{guestId,jdbcType=INTEGER}
   </select>
 
   <select id="selectAll" resultMap="BaseResultMap">
-    select guest_id, name, password, flag
+    select guest_id, username, password, flag
     from guest
   </select>
 
   <!--Guest selectByUsername(String username);-->
   <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select guest_id, name, password, flag
+    select guest_id, username, password, flag
     from guest
-    where name = #{username,jdbcType=VARCHAR}
+    where username = #{username,jdbcType=VARCHAR}
   </select>
 
   <!--Guest selectByUsernameAndPassword(String username,String password);-->
   <select id="selectByUsernameAndPassword" resultMap="BaseResultMap">
-    select guest_id, name, password, flag
+    select guest_id, username, password, flag
     from guest
-    where name = #{username,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR} and flag = 0
+    where username = #{username,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR} and flag = 0
   </select>
 
   <!--Guest adminLogin(String username, String password);-->
   <select id="adminLogin" resultMap="BaseResultMap">
-    select guest_id, name, password, flag
+    select guest_id, username, password, flag
     from guest
-    where name = #{username,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR} and flag = 1
+    where username = #{username,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR} and flag = 1
   </select>
 </mapper>
