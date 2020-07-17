@@ -107,6 +107,7 @@ public class LineServiceImpl implements LineService {
                         lineImage = line.getLineImage();
                     }
                 }
+                lineImage = imgUtilService.saveImg(lineImage);
             }
         }
         return lineMapper.updateByPrimaryKey(
