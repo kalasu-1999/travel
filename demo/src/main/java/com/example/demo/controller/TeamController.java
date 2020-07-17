@@ -60,9 +60,9 @@ public class TeamController {
 
     //根据旅行团id修改旅行团信息
     @RequestMapping("/updateTeamByTeamId")
-    public Map<String, Object> updateTeamByTeamId(String guide1, String guide2, String phone, String bak) {
+    public Map<String, Object> updateTeamByTeamId(Integer teamId, String guide1, String guide2, String phone, String bak) {
         Map<String, Object> map = new HashMap<>();
-        if (teamService.updateTeamByTeamId(guide1, guide2, phone, bak) == 1) {
+        if (teamService.updateTeamByTeamId(teamId, guide1, guide2, phone, bak) == 1) {
             map.put("code", 0);
             map.put("msg", "旅行团信息修改成功");
         } else {

@@ -28,8 +28,8 @@ public class TeamServiceImpl implements TeamService {
 
     //根据旅行团id修改旅行团信息
     @Override
-    public int updateTeamByTeamId(String guide1, String guide2, String phone, String bak) {
-        return teamMapper.updateByPrimaryKey(new Team(null, 1, guide1, guide2, phone, bak));
+    public int updateTeamByTeamId(Integer teamId, String guide1, String guide2, String phone, String bak) {
+        return teamMapper.updateByPrimaryKey(new Team(teamId, 1, guide1, guide2, phone, bak));
     }
 
     //添加旅行团信息
