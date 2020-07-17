@@ -90,14 +90,14 @@ public class GuestController {
 
     //用户信息查询
     @RequestMapping("/selectGuestMessage")
-    public Map<String,Object> selectGuestMessage(HttpServletRequest request){
+    public Map<String, Object> selectGuestMessage(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         Guest guest = jwtService.verifyToken(request, "secret");
         if (guest != null) {
             GuestInfo guestInfo = guestService.selectGuestInfoByGuestId(guest.getGuestId());
-            map.put("code",0);
-            map.put("msg","用户信息获取成功");
-            map.put("guestInfo",guestInfo);
+            map.put("code", 0);
+            map.put("msg", "用户信息获取成功");
+            map.put("guestInfo", guestInfo);
         } else {
             map.put("code", -1);
             map.put("msg", "从token获取用户信息失败");
@@ -107,11 +107,11 @@ public class GuestController {
 
     //用户信息更新
     @RequestMapping("/updateGuestMessage")
-    public Map<String,Object> updateGuestMessage(HttpServletRequest request,String address,String phone,String email){
+    public Map<String, Object> updateGuestMessage(HttpServletRequest request, String address, String phone, String email) {
         Map<String, Object> map = new HashMap<>();
         Guest guest = jwtService.verifyToken(request, "secret");
         if (guest != null) {
-            if (guestService.updateGuestInfo(guest.getGuestId(), address, phone, email)){
+            if (guestService.updateGuestInfo(guest.getGuestId(), address, phone, email)) {
                 map.put("code", 0);
                 map.put("msg", "用户信息更新成功");
             } else {
@@ -125,15 +125,44 @@ public class GuestController {
         return map;
     }
 
+    //管理员登录
+    @RequestMapping("/adminLogin")
+    public Map<String, Object> adminLogin(String username, String password) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            Guest guest = guestService.adminLogin(username, password);
+            if (guest == null) {
+                map.put("code", -2);
+                map.put("msg", "用户名或密码错误");
+            } else {
+                String token = jwtService.createToken(guest.getGuestId(), guest.getName(), guest.getFlag());
+                if (token != null) {
+                    map.put("code", 0);
+                    map.put("msg", "登录成功");
+                    map.put("token", token);
+                    map.put("flag", guest.getFlag());
+                } else {
+                    map.put("code", -3);
+                    map.put("msg", "token创建失败");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("code", -1);
+            map.put("msg", "登录出现异常");
+        }
+        return map;
+    }
+
     //从HttpServletRequest中获取用户名
     @RequestMapping("/getUsername")
-    public Map<String,Object> getUsername(HttpServletRequest request){
+    public Map<String, Object> getUsername(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         Guest guest = jwtService.verifyToken(request, "secret");
         if (guest != null) {
-            map.put("code",0);
-            map.put("msg","获取用户信息成功");
-            map.put("username",guest.getName());
+            map.put("code", 0);
+            map.put("msg", "获取用户信息成功");
+            map.put("username", guest.getName());
         } else {
             map.put("code", -2);
             map.put("msg", "从token获取用户信息失败");

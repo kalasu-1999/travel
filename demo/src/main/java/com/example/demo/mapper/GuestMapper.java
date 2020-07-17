@@ -24,4 +24,7 @@ public interface GuestMapper {
 
     //根据用户名和密码进行登录判断
     Guest selectByUsernameAndPassword(String username,String password);
+
+    //管理员登录
+    Guest adminLogin(String username, String password);
 }

@@ -50,6 +50,13 @@
   <select id="selectByUsernameAndPassword" resultMap="BaseResultMap">
     select guest_id, name, password, flag
     from guest
-    where name = #{username,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
+    where name = #{username,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR} and flag = 0
+  </select>
+
+  <!--Guest adminLogin(String username, String password);-->
+  <select id="adminLogin" resultMap="BaseResultMap">
+    select guest_id, name, password, flag
+    from guest
+    where name = #{username,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR} and flag = 1
   </select>
 </mapper>

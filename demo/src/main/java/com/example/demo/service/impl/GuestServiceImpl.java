@@ -19,6 +19,13 @@ public class GuestServiceImpl implements GuestService {
     @Autowired
     private GuestInfoMapper guestInfoMapper;
 
+    //管理员登录
+    @Override
+    public Guest adminLogin(String username, String password) {
+        password = toMD5(password);
+        return guestMapper.adminLogin(username, password);
+    }
+
     //用户信息修改
     @Override
     public boolean updateGuestInfo(Integer guestId, String address, String phone, String email) {
@@ -56,17 +63,17 @@ public class GuestServiceImpl implements GuestService {
     //用户注册
     @Override
     @Transactional
-    public Integer insertGuest(String username,String password,String address,String phone,String email) {
+    public Integer insertGuest(String username, String password, String address, String phone, String email) {
         if (guestMapper.selectByUsername(username) != null) {
             return -2;
         }
         password = toMD5(password);//密码进行加密
         Guest g = new Guest(null, username, password, 0);
         int i = guestMapper.insert(g);
-        if (i == 0){
+        if (i == 0) {
             throw new RuntimeException("用户创建失败");
         }
-        if (guestInfoMapper.insert(new GuestInfo(null, g.getGuestId(), address, phone, email)) == 0){
+        if (guestInfoMapper.insert(new GuestInfo(null, g.getGuestId(), address, phone, email)) == 0) {
             throw new RuntimeException("用户信息创建失败");
         }
         return 0;
