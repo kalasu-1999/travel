@@ -112,8 +112,8 @@ public class ViewsController {
     @RequestMapping("/deleteViewsByViewId")
     public Map<String, Object> deleteViewsByViewId(Integer viewId) {
         Map<String, Object> map = new HashMap<>();
+        viewLineService.deleteViewLineByViewId(viewId);
         if (viewsService.deleteViewsByViewId(viewId) == 1) {
-            viewLineService.deleteViewLineByViewId(viewId);
             map.put("code", 0);
             map.put("msg", "景点信息删除成功");
         } else {
