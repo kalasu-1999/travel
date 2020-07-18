@@ -7,6 +7,7 @@ import com.example.demo.service.LineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -33,13 +34,14 @@ public class LineServiceImpl implements LineService {
             String meetPhone,
             String goTransport,
             String backTransport,
-            String lineImage,
+            File file,
             String linePhone,
             String djs,
             String bak,
             String weblog) {
-        if (lineImage != null) {
-            lineImage = imgUtilService.saveImg(lineImage);
+        String lineImage = null;
+        if (file != null) {
+            lineImage = imgUtilService.saveImg(file);
         }
         return lineMapper.insert(
                 new Line(null,
@@ -90,24 +92,24 @@ public class LineServiceImpl implements LineService {
     }
 
     @Override
-    public int updateLineByLineId(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String lineImage, String linePhone, String djs, String bak, String weblog) {
+    public int updateLineByLineId(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, File file, String linePhone, String djs, String bak, String weblog) {
         Line line = lineMapper.selectByPrimaryKey(lineId);
+        String lineImage;
         if (line == null) {
             return -1;
         } else {
-            if (lineImage == null) {
+            if (file == null) {
                 lineImage = line.getLineImage();
             } else {
                 if (line.getLineImage() != null) {
-                    String[] split = lineImage.split("/");
-                    if (!split[split.length - 1].equals(line.getLineImage())) {
+                    if (file.getName().equals(line.getLineImage())) {
                         imgUtilService.deleteImg(line.getLineImage());
-                        lineImage = imgUtilService.saveImg(lineImage);
+                        lineImage = imgUtilService.saveImg(file);
                     } else {
                         lineImage = line.getLineImage();
                     }
                 }
-                lineImage = imgUtilService.saveImg(lineImage);
+                lineImage = imgUtilService.saveImg(file);
             }
         }
         return lineMapper.updateByPrimaryKey(

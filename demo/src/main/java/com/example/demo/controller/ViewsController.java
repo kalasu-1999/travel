@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,9 +31,9 @@ public class ViewsController {
 
     //添加景点
     @RequestMapping("/insertViews")
-    public Map<String, Object> insertViews(String viewName, String viewImage, String content) {
+    public Map<String, Object> insertViews(String viewName, File file, String content) {
         Map<String, Object> map = new HashMap<>();
-        if (viewsService.insertViews(viewName, viewImage, content) == 1) {
+        if (viewsService.insertViews(viewName, file, content) == 1) {
             map.put("code", 0);
             map.put("msg", "景点信息添加成功");
         } else {
@@ -44,9 +45,9 @@ public class ViewsController {
 
     //修改景点信息
     @RequestMapping("/updateViews")
-    public Map<String, Object> updateViews(Integer viewId, String viewName, String viewImage, String content) {
+    public Map<String, Object> updateViews(Integer viewId, String viewName, File file, String content) {
         Map<String, Object> map = new HashMap<>();
-        if (viewsService.updateViews(viewId, viewName, viewImage, content) == 1) {
+        if (viewsService.updateViews(viewId, viewName, file, content) == 1) {
             map.put("code", 0);
             map.put("msg", "景点信息更新成功");
         } else {

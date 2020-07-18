@@ -2,14 +2,15 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Views;
 
+import java.io.File;
 import java.util.List;
 
 public interface ViewsService {
     //添加景点
-    int insertViews(String viewName, String viewImage, String content);
+    int insertViews(String viewName, File file, String content);
 
     //修改景点信息
-    int updateViews(Integer viewId, String viewName, String viewImage, String content);
+    int updateViews(Integer viewId, String viewName, File file, String content);
 
     //根据景点id获取景点信息
     Views selectViewsByViewId(Integer viewId);

@@ -47,8 +47,8 @@ public class OrderController {
                 map.put("msg", "订单添加失败");
             }
         } else {
-            map.put("code", -2);
-            map.put("msg", "无法获取到用户信息");
+            map.put("code", 401);
+            map.put("msg", "登录失效");
         }
         return map;
     }
@@ -67,8 +67,8 @@ public class OrderController {
                 map.put("msg", "订单修改失败");
             }
         } else {
-            map.put("code", -2);
-            map.put("msg", "无法获取到用户信息");
+            map.put("code", 401);
+            map.put("msg", "登录失效");
         }
         return map;
     }
@@ -91,8 +91,8 @@ public class OrderController {
                 map.put("msg", "订单获取失败或无订单");
             }
         } else {
-            map.put("code", -2);
-            map.put("msg", "无法获取到用户信息");
+            map.put("code", 401);
+            map.put("msg", "登录失效");
         }
         return map;
     }

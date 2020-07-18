@@ -29,8 +29,8 @@ public class MessageController {
         Map<String, Object> map = new HashMap<>();
         Guest guest = jwtService.verifyToken(request, "secret");
         if (guest == null) {
-            map.put("code", -2);
-            map.put("msg", "用户信息获取失败");
+            map.put("code", 401);
+            map.put("msg", "登录失效");
         } else {
             if (messageService.insertMessage(guest.getGuestId(), title, content) == 1) {
                 map.put("code", 0);
@@ -81,8 +81,8 @@ public class MessageController {
         Map<String, Object> map = new HashMap<>();
         Guest guest = jwtService.verifyToken(request, "secret");
         if (guest == null) {
-            map.put("code", -2);
-            map.put("msg", "用户信息获取失败");
+            map.put("code", 401);
+            map.put("msg", "登录失效");
         } else {
             PageHelper.startPage(page, size);
             List<Map<String, Object>> messageList = messageService.selectMessageByGuestId(guest.getGuestId());

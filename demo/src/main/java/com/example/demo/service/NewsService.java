@@ -1,11 +1,12 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.News;
-import com.github.pagehelper.Page;
+
+import java.util.List;
 
 public interface NewsService {
     //显示所有新闻按时间排序
-    Page<News> selectAllNews();
+    List<News> selectAllNews();
 
     //添加新闻
     int insertNews(String title, String show);
@@ -14,5 +15,5 @@ public interface NewsService {
     int updateNewsByNewsId(Integer newsId);
 
     //根据标题信息模糊查询
-    Page<News> selectNewsByHint(String hint);
+    List<News> selectNewsByHint(String hint);
 }

@@ -91,14 +91,15 @@ public class TeamController {
     public Map<String, Object> getAllTeams(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
         Map<String, Object> map = new HashMap<>();
         PageHelper.startPage(page, size);
-        Page<Team> teams = teamService.selectAllTeam();
+        List<Team> teams = teamService.selectAllTeam();
         if (teams.isEmpty()) {
             map.put("code", -1);
             map.put("msg", "旅行团信息获取失败");
         } else {
+            PageInfo<Team> pageInfo = new PageInfo<>(teams);
             map.put("code", 0);
             map.put("msg", "旅行团信息获取成功");
-            map.put("data", teams);
+            map.put("data", pageInfo);
         }
         return map;
     }

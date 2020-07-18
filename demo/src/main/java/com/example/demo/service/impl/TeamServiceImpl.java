@@ -3,7 +3,6 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.Team;
 import com.example.demo.mapper.TeamMapper;
 import com.example.demo.service.TeamService;
-import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +15,8 @@ public class TeamServiceImpl implements TeamService {
 
     //显示全部旅行团
     @Override
-    public Page<Team> selectAllTeam() {
-        return (Page<Team>) teamMapper.selectAll();
+    public List<Team> selectAllTeam() {
+        return teamMapper.selectAll();
     }
 
     //多条件查询

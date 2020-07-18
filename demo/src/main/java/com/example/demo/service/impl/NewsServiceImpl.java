@@ -3,11 +3,11 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.News;
 import com.example.demo.mapper.NewsMapper;
 import com.example.demo.service.NewsService;
-import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class NewsServiceImpl implements NewsService {
@@ -15,8 +15,8 @@ public class NewsServiceImpl implements NewsService {
     private NewsMapper newsMapper;
 
     @Override
-    public Page<News> selectAllNews() {
-        return (Page<News>) newsMapper.selectAll();
+    public List<News> selectAllNews() {
+        return newsMapper.selectAll();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public Page<News> selectNewsByHint(String hint) {
-        return (Page<News>) newsMapper.selectNewsByHint(hint);
+    public List<News> selectNewsByHint(String hint) {
+        return newsMapper.selectNewsByHint(hint);
     }
 }

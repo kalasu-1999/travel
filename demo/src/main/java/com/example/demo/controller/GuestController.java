@@ -82,8 +82,8 @@ public class GuestController {
                 map.put("msg", "密码修改失败");
             }
         } else {
-            map.put("code", -2);
-            map.put("msg", "从token获取用户信息失败");
+            map.put("code", 401);
+            map.put("msg", "登录失效");
         }
         return map;
     }
@@ -99,8 +99,8 @@ public class GuestController {
             map.put("msg", "用户信息获取成功");
             map.put("data", guestInfo);
         } else {
-            map.put("code", -1);
-            map.put("msg", "从token获取用户信息失败");
+            map.put("code", 401);
+            map.put("msg", "登录失效");
         }
         return map;
     }
@@ -119,8 +119,8 @@ public class GuestController {
                 map.put("msg", "用户信息更新失败");
             }
         } else {
-            map.put("code", -2);
-            map.put("msg", "从token获取用户信息失败");
+            map.put("code", 401);
+            map.put("msg", "登录失效");
         }
         return map;
     }

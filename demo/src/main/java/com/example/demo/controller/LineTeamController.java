@@ -27,7 +27,7 @@ public class LineTeamController {
 
     //添加路线-旅行团对应信息
     @RequestMapping("/insertLineTeam")
-    public Map<String, Object> insertLineTeam(Integer teamId, Integer lineId, Date goDate, Date backDate) {
+    public Map<String, Object> insertLineTeam(Integer teamId, Integer lineId, String goDate, String backDate) {
         Map<String, Object> map = new HashMap<>();
         if (lineTeamService.insertLineTeam(teamId, lineId, goDate, backDate) == 1) {
             map.put("code", 0);
@@ -41,7 +41,7 @@ public class LineTeamController {
 
     //修改路线-旅行团对应信息
     @RequestMapping("/updateLineTeam")
-    public Map<String, Object> updateLineTeam(Integer lineteamId, Integer teamId, Integer lineId, Date goDate, Date backDate, Integer adult, Integer child) {
+    public Map<String, Object> updateLineTeam(Integer lineteamId, Integer teamId, Integer lineId, String goDate, String backDate, Integer adult, Integer child) {
         Map<String, Object> map = new HashMap<>();
         if (lineTeamService.updateLineTeam(lineteamId, teamId, lineId, goDate, backDate, adult, child) == 1) {
             map.put("code", 0);
@@ -98,7 +98,7 @@ public class LineTeamController {
 
     //多条件查询
     @RequestMapping("/selectByMore")
-    public Map<String, Object> selectByMore(Integer teamId, String bak, Integer lineTeamId, Date goDate, Integer lineId, String lineName, String startPlace, String endPlace, Integer viewId, String viewName, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
+    public Map<String, Object> selectByMore(Integer teamId, String bak, Integer lineTeamId, String goDate, Integer lineId, String lineName, String startPlace, String endPlace, Integer viewId, String viewName, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
         Map<String, Object> map = new HashMap<>();
         List<Map<String, Object>> list = new ArrayList<>();
         List<LineTeam> lineTeams = lineTeamService.selectByTables(teamId, bak, lineTeamId, goDate, lineId, lineName, startPlace, endPlace, viewId, viewName);

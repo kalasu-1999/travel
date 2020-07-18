@@ -3,13 +3,15 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.Views;
 import com.example.demo.mapper.ViewsMapper;
 import com.example.demo.service.ImgUtilService;
+import com.example.demo.service.ViewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 
 @Service
-public class ViewsServiceImpl implements com.example.demo.service.ViewsService {
+public class ViewsServiceImpl implements ViewsService {
     @Autowired
     private ViewsMapper viewsMapper;
     @Autowired
@@ -17,32 +19,33 @@ public class ViewsServiceImpl implements com.example.demo.service.ViewsService {
 
 
     @Override
-    public int insertViews(String viewName, String viewImage, String content) {
-        if (viewImage != null) {
-            viewImage = imgUtilService.saveImg(viewImage);
+    public int insertViews(String viewName, File file, String content) {
+        String viewImage = null;
+        if (file != null) {
+            viewImage = imgUtilService.saveImg(file);
         }
         return viewsMapper.insert(new Views(null, viewName, viewImage, content));
     }
 
     @Override
-    public int updateViews(Integer viewId, String viewName, String viewImage, String content) {
+    public int updateViews(Integer viewId, String viewName, File file, String content) {
         Views views = viewsMapper.selectByPrimaryKey(viewId);
+        String viewImage;
         if (views == null) {
             return -1;
         } else {
-            if (viewImage == null) {
+            if (file == null) {
                 viewImage = views.getViewImage();
             } else {
                 if (views.getViewImage() != null) {
-                    String[] split = viewImage.split("/");
-                    if (!split[split.length - 1].equals(views.getViewImage())) {
+                    if (file.getName().equals(views.getViewImage())) {
                         imgUtilService.deleteImg(views.getViewImage());
-                        viewImage = imgUtilService.saveImg(viewImage);
+                        viewImage = imgUtilService.saveImg(file);
                     } else {
                         viewImage = views.getViewImage();
                     }
                 }
-                viewImage = imgUtilService.saveImg(viewImage);
+                viewImage = imgUtilService.saveImg(file);
             }
         }
         return viewsMapper.updateByPrimaryKey(new Views(viewId, viewName, viewImage, content));

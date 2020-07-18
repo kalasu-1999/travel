@@ -38,6 +38,9 @@ public class JWTServiceImpl implements JWTService {
     @Override
     public Guest verifyToken(HttpServletRequest request, String key){
         String token = request.getHeader("token");
+        if (token == null || token.equals("")){
+            return null;
+        }
         JWTVerifier verifier;
         try {
             verifier = JWT.require(Algorithm.HMAC256(key)).build();

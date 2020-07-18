@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,9 +35,9 @@ public class LineController {
 
     //添加路线
     @RequestMapping("/insertLine")
-    public Map<String, Object> insertLine(String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String lineImage, String linePhone, String djs, String bak, String weblog) {
+    public Map<String, Object> insertLine(String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, File file, String linePhone, String djs, String bak, String weblog) {
         Map<String, Object> map = new HashMap<>();
-        if (lineService.insertLine(lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, lineImage, linePhone, djs, bak, weblog) == 1) {
+        if (lineService.insertLine(lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, file, linePhone, djs, bak, weblog) == 1) {
             map.put("code", 0);
             map.put("msg", "路线添加成功");
         } else {
@@ -98,9 +99,9 @@ public class LineController {
 
     //根据路线id路线信息修改
     @RequestMapping("/updateLineByLineId")
-    public Map<String, Object> updateLineByLineId(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String lineImage, String linePhone, String djs, String bak, String weblog) {
+    public Map<String, Object> updateLineByLineId(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, File file, String linePhone, String djs, String bak, String weblog) {
         Map<String, Object> map = new HashMap<>();
-        if (lineService.updateLineByLineId(lineId, lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, lineImage, linePhone, djs, bak, weblog) != 0) {
+        if (lineService.updateLineByLineId(lineId, lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, file, linePhone, djs, bak, weblog) != 0) {
             map.put("code", 0);
             map.put("msg", "线路信息修改成功");
         } else {

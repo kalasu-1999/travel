@@ -5,12 +5,14 @@ import com.example.demo.entity.Team;
 import com.example.demo.service.NewsService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,14 +26,15 @@ public class NewsController {
     public Map<String, Object> selectAllNews(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
         Map<String, Object> map = new HashMap<>();
         PageHelper.startPage(page, size);
-        Page<News> news = newsService.selectAllNews();
+        List<News> news = newsService.selectAllNews();
+        PageInfo<News> pageInfo = new PageInfo<>(news);
         if (news.isEmpty()) {
             map.put("code", -1);
             map.put("msg", "新闻信息获取失败");
         } else {
             map.put("code", 0);
             map.put("msg", "新闻信息获取成功");
-            map.put("data", news);
+            map.put("data", pageInfo);
         }
         return map;
     }
@@ -69,14 +72,15 @@ public class NewsController {
     public Map<String, Object> selectNewsByHint(String hint, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
         Map<String, Object> map = new HashMap<>();
         PageHelper.startPage(page, size);
-        Page<News> news = newsService.selectNewsByHint(hint);
+        List<News> news = newsService.selectNewsByHint(hint);
+        PageInfo<News> pageInfo = new PageInfo<>(news);
         if (news.isEmpty()) {
             map.put("code", -1);
             map.put("msg", "新闻信息获取失败");
         } else {
             map.put("code", 0);
             map.put("msg", "新闻信息获取成功");
-            map.put("data", news);
+            map.put("data", pageInfo);
         }
         return map;
     }
