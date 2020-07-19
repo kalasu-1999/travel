@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class LineTeam {
@@ -9,8 +11,10 @@ public class LineTeam {
 
     private Integer lineId;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
     private Date goDate;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
     private Date backDate;
 
     private Integer adult;

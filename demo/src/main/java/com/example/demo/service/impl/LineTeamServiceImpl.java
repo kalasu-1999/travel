@@ -19,7 +19,7 @@ public class LineTeamServiceImpl implements LineTeamService {
 
     @Override
     public int insertLineTeam(Integer teamId, Integer lineId, String goDate, String backDate) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date go = null;
             Date back = null;
@@ -38,7 +38,7 @@ public class LineTeamServiceImpl implements LineTeamService {
 
     @Override
     public int updateLineTeam(Integer lineteamId, Integer teamId, Integer lineId, String goDate, String backDate, Integer adult, Integer child) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             LineTeam lineTeam = lineTeamMapper.selectByPrimaryKey(lineteamId);
             Date go;
@@ -72,7 +72,7 @@ public class LineTeamServiceImpl implements LineTeamService {
 
     @Override
     public List<LineTeam> selectLineTeamByMore(Integer lineteamId, Integer teamId, Integer lineId, String goDate, String backDate, Integer adult, Integer child) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date go = null;
             Date back = null;
@@ -96,18 +96,17 @@ public class LineTeamServiceImpl implements LineTeamService {
 
     @Override
     public List<LineTeam> selectByTables(Integer teamId, String bak, Integer lineTeamId, String goDate, Integer lineId, String lineName, String startPlace, String endPlace, Integer viewId, String viewName) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Date go;
-            if (goDate == null || goDate.equals("")) {
-                go = simpleDateFormat.parse(simpleDateFormat.format(System.currentTimeMillis()));
-            } else {
-                go = simpleDateFormat.parse(goDate);
-            }
-            return lineTeamMapper.selectByTables(teamId, bak, lineTeamId, go, lineId, lineName, startPlace, endPlace, viewId, viewName);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        System.out.println(viewName);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        if (goDate == null || goDate.equals("")) {
+            goDate = simpleDateFormat.format(System.currentTimeMillis());
         }
-        return new ArrayList<>();
+        System.out.println(goDate);
+        return lineTeamMapper.selectByTables(teamId, bak, lineTeamId, goDate, lineId, lineName, startPlace, endPlace, viewId, viewName);
+    }
+
+    @Override
+    public int deleteLineTeam(Integer lineteamId) {
+        return lineTeamMapper.deleteByPrimaryKey(lineteamId);
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -35,14 +36,25 @@ public class LineController {
 
     //添加路线
     @RequestMapping("/insertLine")
-    public Map<String, Object> insertLine(String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, File file, String linePhone, String djs, String bak, String weblog) {
+    public Map<String, Object> insertLine(String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, MultipartFile lineImage, String linePhone, String djs, String bak, String weblog) {
         Map<String, Object> map = new HashMap<>();
-        if (lineService.insertLine(lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, file, linePhone, djs, bak, weblog) == 1) {
-            map.put("code", 0);
-            map.put("msg", "路线添加成功");
+        if (lineName == null || lineName.equals("")) {
+            map.put("code", -2);
+            map.put("msg", "路线名称不能为空");
+        } else if (startPlace == null || startPlace.equals("")) {
+            map.put("code", -2);
+            map.put("msg", "起始地不能为空");
+        } else if (endPlace == null || endPlace.equals("")) {
+            map.put("code", -2);
+            map.put("msg", "目的地不能为空");
         } else {
-            map.put("code", -1);
-            map.put("msg", "路线添加失败");
+            if (lineService.insertLine(lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, lineImage, linePhone, djs, bak, weblog) == 1) {
+                map.put("code", 0);
+                map.put("msg", "路线添加成功");
+            } else {
+                map.put("code", -1);
+                map.put("msg", "路线添加失败");
+            }
         }
         return map;
     }
@@ -99,14 +111,25 @@ public class LineController {
 
     //根据路线id路线信息修改
     @RequestMapping("/updateLineByLineId")
-    public Map<String, Object> updateLineByLineId(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, File file, String linePhone, String djs, String bak, String weblog) {
+    public Map<String, Object> updateLineByLineId(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, MultipartFile lineImage, String linePhone, String djs, String bak, String weblog) {
         Map<String, Object> map = new HashMap<>();
-        if (lineService.updateLineByLineId(lineId, lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, file, linePhone, djs, bak, weblog) != 0) {
-            map.put("code", 0);
-            map.put("msg", "线路信息修改成功");
+        if (lineName == null || lineName.equals("")) {
+            map.put("code", -2);
+            map.put("msg", "路线名称不能为空");
+        } else if (startPlace == null || startPlace.equals("")) {
+            map.put("code", -2);
+            map.put("msg", "起始地不能为空");
+        } else if (endPlace == null || endPlace.equals("")) {
+            map.put("code", -2);
+            map.put("msg", "目的地不能为空");
         } else {
-            map.put("code", -1);
-            map.put("msg", "路线信息修改失败");
+            if (lineService.updateLineByLineId(lineId, lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, lineImage, linePhone, djs, bak, weblog) != 0) {
+                map.put("code", 0);
+                map.put("msg", "线路信息修改成功");
+            } else {
+                map.put("code", -1);
+                map.put("msg", "路线信息修改失败");
+            }
         }
         return map;
     }
@@ -129,10 +152,10 @@ public class LineController {
 
     //多条件查询
     @RequestMapping("/getLineByMore")
-    public Map<String, Object> getLineByMore(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String linePhone, String djs, String bak, String weblog, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
+    public Map<String, Object> getLineByMore(Integer lineId, String lineLevel, String lineName, String lineType, String startPlace, String endPlace, Integer day, BigDecimal price1, BigDecimal price2, Integer qp, Integer dp, String meetPlace, String meetPhone, String goTransport, String backTransport, String linePhone, Integer status, String djs, String bak, String weblog, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
         Map<String, Object> map = new HashMap<>();
         PageHelper.startPage(page, size);
-        List<Line> lines = lineService.getLineByMore(lineId, lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, linePhone, djs, bak, weblog);
+        List<Line> lines = lineService.getLineByMore(lineId, lineLevel, lineName, lineType, startPlace, endPlace, day, price1, price2, qp, dp, meetPlace, meetPhone, goTransport, backTransport, linePhone, status, djs, bak, weblog);
         if (lines.size() == 0) {
             map.put("code", -1);
             map.put("msg", "路线信息获取失败或未找到符合条件的路线");
@@ -174,9 +197,9 @@ public class LineController {
 
     //修改线路是否停运（默认0表示运行，1停运）
     @RequestMapping("/updateLineState")
-    public Map<String, Object> updateLineState(Integer lineId, Integer state) {
+    public Map<String, Object> updateLineState(Integer lineId, Integer status) {
         Map<String, Object> map = new HashMap<>();
-        if (lineService.updateLineState(lineId, state) != 0) {
+        if (lineService.updateLineState(lineId, status) != 0) {
             map.put("code", 0);
             map.put("msg", "线路信息修改成功");
         } else {

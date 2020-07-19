@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.entity.LineTeam;
 
-import java.util.Date;
 import java.util.List;
 
 public interface LineTeamService {
@@ -26,4 +25,6 @@ public interface LineTeamService {
 
     //根据id获取信息
     LineTeam selectByLineTeamId(Integer lineteamId);
+
+    int deleteLineTeam(Integer lineteamId);
 }

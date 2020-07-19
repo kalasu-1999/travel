@@ -22,16 +22,28 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public int insertNews(String title, String show) {
         Date date = new Date(System.currentTimeMillis());
-        return newsMapper.insert(new News(null,title,show,date,"0"));
+        return newsMapper.insert(new News(null, title, show, date, "0"));
     }
 
     @Override
     public int updateNewsByNewsId(Integer newsId) {
-        return newsMapper.updateFlagByNewsId(newsId);
+        return newsMapper.deleteByPrimaryKey(newsId);
     }
 
     @Override
     public List<News> selectNewsByHint(String hint) {
         return newsMapper.selectNewsByHint(hint);
+    }
+
+    @Override
+    public int updateNews(Integer newsId, String title, String show) {
+        News news = newsMapper.selectByPrimaryKey(newsId);
+        if (news == null) {
+            return 0;
+        } else {
+            news.setTitle(title);
+            news.setShow(show);
+            return newsMapper.updateByPrimaryKey(news);
+        }
     }
 }

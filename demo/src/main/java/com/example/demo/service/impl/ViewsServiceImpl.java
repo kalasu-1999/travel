@@ -6,9 +6,10 @@ import com.example.demo.service.ImgUtilService;
 import com.example.demo.service.ViewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ViewsServiceImpl implements ViewsService {
@@ -19,7 +20,7 @@ public class ViewsServiceImpl implements ViewsService {
 
 
     @Override
-    public int insertViews(String viewName, File file, String content) {
+    public int insertViews(String viewName, MultipartFile file, String content) {
         String viewImage = null;
         if (file != null) {
             viewImage = imgUtilService.saveImg(file);
@@ -28,7 +29,7 @@ public class ViewsServiceImpl implements ViewsService {
     }
 
     @Override
-    public int updateViews(Integer viewId, String viewName, File file, String content) {
+    public int updateViews(Integer viewId, String viewName, MultipartFile file, String content) {
         Views views = viewsMapper.selectByPrimaryKey(viewId);
         String viewImage;
         if (views == null) {
@@ -37,7 +38,7 @@ public class ViewsServiceImpl implements ViewsService {
             if (file == null) {
                 viewImage = views.getViewImage();
             } else {
-                if (views.getViewImage() != null) {
+                if (views.getViewImage() != null && !views.getViewImage().equals("")) {
                     if (file.getName().equals(views.getViewImage())) {
                         imgUtilService.deleteImg(views.getViewImage());
                         viewImage = imgUtilService.saveImg(file);
@@ -54,7 +55,7 @@ public class ViewsServiceImpl implements ViewsService {
     @Override
     public Views selectViewsByViewId(Integer viewId) {
         Views views = viewsMapper.selectByPrimaryKey(viewId);
-        if (views.getViewImage() != null) {
+        if (views.getViewImage() != null && !views.getViewImage().equals("")) {
             views.setViewImage(imgUtilService.getImgPath(views.getViewImage()));
         }
         return views;
@@ -64,7 +65,7 @@ public class ViewsServiceImpl implements ViewsService {
     public List<Views> selectViewsByHint(String hint) {
         List<Views> views = viewsMapper.selectByHint(hint);
         for (Views view : views) {
-            if (view.getViewImage() != null) {
+            if (view.getViewImage() != null && !view.getViewImage().equals("")) {
                 view.setViewImage(imgUtilService.getImgPath(view.getViewImage()));
             }
         }
@@ -75,7 +76,7 @@ public class ViewsServiceImpl implements ViewsService {
     public List<Views> selectAllViews() {
         List<Views> views = viewsMapper.selectAll();
         for (Views view : views) {
-            if (view.getViewImage() != null) {
+            if (view.getViewImage() != null && !view.getViewImage().equals("")) {
                 view.setViewImage(imgUtilService.getImgPath(view.getViewImage()));
             }
         }
@@ -88,7 +89,7 @@ public class ViewsServiceImpl implements ViewsService {
         if (views == null) {
             return -1;
         } else {
-            if (views.getViewImage() != null) {
+            if (views.getViewImage() != null && !views.getViewImage().equals("")) {
                 imgUtilService.deleteImg(views.getViewImage());
             }
             return viewsMapper.deleteByPrimaryKey(viewId);

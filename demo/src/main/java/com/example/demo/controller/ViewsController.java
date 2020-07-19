@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,28 +32,47 @@ public class ViewsController {
 
     //添加景点
     @RequestMapping("/insertViews")
-    public Map<String, Object> insertViews(String viewName, File file, String content) {
+    public Map<String, Object> insertViews(String viewName, @RequestParam("viewImage") MultipartFile viewImage, String content) {
         Map<String, Object> map = new HashMap<>();
-        if (viewsService.insertViews(viewName, file, content) == 1) {
-            map.put("code", 0);
-            map.put("msg", "景点信息添加成功");
+        if (viewName == null || viewName.equals("")) {
+            map.put("code", -2);
+            map.put("msg", "景点名称不能为空");
+        } else if (content == null || content.equals("")) {
+            map.put("code", -2);
+            map.put("msg", "景点描述不能为空");
         } else {
-            map.put("code", -1);
-            map.put("msg", "景点信息添加失败");
+            if (viewsService.insertViews(viewName, viewImage, content) == 1) {
+                map.put("code", 0);
+                map.put("msg", "景点信息添加成功");
+            } else {
+                map.put("code", -1);
+                map.put("msg", "景点信息添加失败");
+            }
         }
         return map;
     }
 
     //修改景点信息
     @RequestMapping("/updateViews")
-    public Map<String, Object> updateViews(Integer viewId, String viewName, File file, String content) {
+    public Map<String, Object> updateViews(Integer viewId, String viewName, MultipartFile viewImage, String content) {
         Map<String, Object> map = new HashMap<>();
-        if (viewsService.updateViews(viewId, viewName, file, content) == 1) {
-            map.put("code", 0);
-            map.put("msg", "景点信息更新成功");
+        if (viewId == null) {
+            map.put("code", -2);
+            map.put("msg", "景点id不能为空");
+        } else if (viewName == null || viewName.equals("")) {
+            map.put("code", -2);
+            map.put("msg", "景点名称不能为空");
+        } else if (content == null || content.equals("")) {
+            map.put("code", -2);
+            map.put("msg", "景点描述不能为空");
         } else {
-            map.put("code", -1);
-            map.put("msg", "景点信息更新失败");
+            if (viewsService.updateViews(viewId, viewName, viewImage, content) == 1) {
+                map.put("code", 0);
+                map.put("msg", "景点信息更新成功");
+            } else {
+                map.put("code", -1);
+                map.put("msg", "景点信息更新失败");
+            }
         }
         return map;
     }
@@ -61,14 +81,19 @@ public class ViewsController {
     @RequestMapping("/selectViewsByViewId")
     public Map<String, Object> selectViewsByViewId(Integer viewId) {
         Map<String, Object> map = new HashMap<>();
-        Views views = viewsService.selectViewsByViewId(viewId);
-        if (views != null) {
-            map.put("code", 0);
-            map.put("msg", "景点信息获取成功");
-            map.put("data", views);
+        if (viewId == null) {
+            map.put("code", -2);
+            map.put("msg", "景点id不能为空");
         } else {
-            map.put("code", -1);
-            map.put("msg", "景点信息获取失败");
+            Views views = viewsService.selectViewsByViewId(viewId);
+            if (views != null) {
+                map.put("code", 0);
+                map.put("msg", "景点信息获取成功");
+                map.put("data", views);
+            } else {
+                map.put("code", -1);
+                map.put("msg", "景点信息获取失败");
+            }
         }
         return map;
     }
@@ -113,13 +138,18 @@ public class ViewsController {
     @RequestMapping("/deleteViewsByViewId")
     public Map<String, Object> deleteViewsByViewId(Integer viewId) {
         Map<String, Object> map = new HashMap<>();
-        viewLineService.deleteViewLineByViewId(viewId);
-        if (viewsService.deleteViewsByViewId(viewId) == 1) {
-            map.put("code", 0);
-            map.put("msg", "景点信息删除成功");
+        if (viewId == null) {
+            map.put("code", -2);
+            map.put("msg", "景点id不能为空");
         } else {
-            map.put("code", -1);
-            map.put("msg", "景点信息删除失败");
+            viewLineService.deleteViewLineByViewId(viewId);
+            if (viewsService.deleteViewsByViewId(viewId) == 1) {
+                map.put("code", 0);
+                map.put("msg", "景点信息删除成功");
+            } else {
+                map.put("code", -1);
+                map.put("msg", "景点信息删除失败");
+            }
         }
         return map;
     }
@@ -128,42 +158,47 @@ public class ViewsController {
     @RequestMapping("/selectAllLine")
     public Map<String, Object> selectAllLine(Integer viewId) {
         Map<String, Object> map = new HashMap<>();
-        List<LineViews> lineViews = viewLineService.selectAllLine(viewId);
-        if (lineViews.size() == 0){
-            map.put("code",-1);
-            map.put("msg","数据获取失败或未获取到数据");
+        if (viewId == null) {
+            map.put("code", -2);
+            map.put("msg", "景点id不能为空");
         } else {
-            List<Map<String,Object>> lineList = new ArrayList<>();
-            for (LineViews lineView : lineViews) {
-                Line line = lineService.selectLineByLineId(lineView.getLineId());
-                Map<String,Object> m = new HashMap<>();
-                m.put("lineViewsId",lineView.getLineviewsId());
-                m.put("lineId",line.getLineId());
-                m.put("lineLevel",line.getLineLevel());
-                m.put("lineName",line.getLineName());
-                m.put("lineType",line.getLineType());
-                m.put("startPlace",line.getStartPlace());
-                m.put("endPlace",line.getEndPlace());
-                m.put("day",line.getDay());
-                m.put("price1",line.getPrice1());
-                m.put("price2",line.getPrice2());
-                m.put("qp",line.getQp());
-                m.put("dp",line.getDp());
-                m.put("meetPlace",line.getMeetPlace());
-                m.put("meetPhone",line.getMeetPhone());
-                m.put("goTransport",line.getGoTransport());
-                m.put("backTransport",line.getBackTransport());
-                m.put("lineImage",line.getLineImage());
-                m.put("linePhone",line.getLinePhone());
-                m.put("status",line.getStatus());
-                m.put("djs",line.getDjs());
-                m.put("bak",line.getBak());
-                m.put("weblog",line.getWeblog());
-                lineList.add(m);
+            List<LineViews> lineViews = viewLineService.selectAllLine(viewId);
+            if (lineViews.size() == 0) {
+                map.put("code", -1);
+                map.put("msg", "数据获取失败或未获取到数据");
+            } else {
+                List<Map<String, Object>> lineList = new ArrayList<>();
+                for (LineViews lineView : lineViews) {
+                    Line line = lineService.selectLineByLineId(lineView.getLineId());
+                    Map<String, Object> m = new HashMap<>();
+                    m.put("lineViewsId", lineView.getLineviewsId());
+                    m.put("lineId", line.getLineId());
+                    m.put("lineLevel", line.getLineLevel());
+                    m.put("lineName", line.getLineName());
+                    m.put("lineType", line.getLineType());
+                    m.put("startPlace", line.getStartPlace());
+                    m.put("endPlace", line.getEndPlace());
+                    m.put("day", line.getDay());
+                    m.put("price1", line.getPrice1());
+                    m.put("price2", line.getPrice2());
+                    m.put("qp", line.getQp());
+                    m.put("dp", line.getDp());
+                    m.put("meetPlace", line.getMeetPlace());
+                    m.put("meetPhone", line.getMeetPhone());
+                    m.put("goTransport", line.getGoTransport());
+                    m.put("backTransport", line.getBackTransport());
+                    m.put("lineImage", line.getLineImage());
+                    m.put("linePhone", line.getLinePhone());
+                    m.put("status", line.getStatus());
+                    m.put("djs", line.getDjs());
+                    m.put("bak", line.getBak());
+                    m.put("weblog", line.getWeblog());
+                    lineList.add(m);
+                }
+                map.put("code", 0);
+                map.put("msg", "数据获取成功");
+                map.put("data", lineList);
             }
-            map.put("code", 0);
-            map.put("msg", "数据获取成功");
-            map.put("data",lineList);
         }
         return map;
     }

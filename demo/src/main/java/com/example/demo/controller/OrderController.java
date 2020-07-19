@@ -32,6 +32,8 @@ public class OrderController {
     private ViewsService viewsService;
     @Autowired
     private TeamService teamService;
+    @Autowired
+    private ImgUtilService imgUtilService;
 
     //添加订单
     @RequestMapping("/insertOrder")
@@ -39,12 +41,21 @@ public class OrderController {
         Map<String, Object> map = new HashMap<>();
         Guest guest = jwtService.verifyToken(request, "secret");
         if (guest != null) {
-            if (orderService.insertOrder(guest.getGuestId(),lineteamId,adult,child,bak) == 1) {
-                map.put("code", 0);
-                map.put("msg", "订单添加成功");
+            if (adult <= 0 || child < 0) {
+                map.put("code", -2);
+                map.put("msg", "订单添加失败,请输入正确的人数");
             } else {
-                map.put("code", -1);
-                map.put("msg", "订单添加失败");
+                int i = orderService.insertOrder(guest.getGuestId(), lineteamId, adult, child, bak);
+                if (i == 1) {
+                    map.put("code", 0);
+                    map.put("msg", "订单添加成功");
+                } else if (i == -2) {
+                    map.put("code", -2);
+                    map.put("msg", "人数超过限制");
+                } else {
+                    map.put("code", -1);
+                    map.put("msg", "订单添加失败");
+                }
             }
         } else {
             map.put("code", 401);
@@ -59,12 +70,21 @@ public class OrderController {
         Map<String, Object> map = new HashMap<>();
         Guest guest = jwtService.verifyToken(request, "secret");
         if (guest != null) {
-            if (orderService.updateOrder(orderId, guest.getGuestId(), lineteamId, adult, child, bak) == 1) {
-                map.put("code", 0);
-                map.put("msg", "订单修改成功");
+            if (adult <= 0 || child < 0) {
+                map.put("code", -2);
+                map.put("msg", "订单添加失败,请输入正确的人数");
             } else {
-                map.put("code", -1);
-                map.put("msg", "订单修改失败");
+                int i = orderService.updateOrder(orderId, guest.getGuestId(), lineteamId, adult, child, bak);
+                if (i == 1) {
+                    map.put("code", 0);
+                    map.put("msg", "订单添加成功");
+                } else if (i == -2) {
+                    map.put("code", -2);
+                    map.put("msg", "人数超过限制");
+                } else {
+                    map.put("code", -1);
+                    map.put("msg", "订单添加失败");
+                }
             }
         } else {
             map.put("code", 401);
@@ -79,9 +99,9 @@ public class OrderController {
         Map<String, Object> map = new HashMap<>();
         Guest guest = jwtService.verifyToken(request, "secret");
         if (guest != null) {
+            PageHelper.startPage(page, size);
             List<Order> orders = orderService.selectOrderByGuestId(guest.getGuestId());
             if (orders.size() != 0) {
-                PageHelper.startPage(page, size);
                 PageInfo<Order> pageInfo = new PageInfo<>(orders);
                 map.put("code", 0);
                 map.put("msg", "订单获取成功");
@@ -101,9 +121,9 @@ public class OrderController {
     @RequestMapping("/selectAllOrder")
     public Map<String, Object> selectAllOrder(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
         Map<String, Object> map = new HashMap<>();
+        PageHelper.startPage(page, size);
         List<Order> orders = orderService.selectAllOrder();
         if (orders.size() != 0) {
-            PageHelper.startPage(page, size);
             PageInfo<Order> pageInfo = new PageInfo<>(orders);
             map.put("code", 0);
             map.put("msg", "订单获取成功");
@@ -157,28 +177,54 @@ public class OrderController {
             map.put("msg", "信息查询异常或无信息");
         } else {
             LineTeam lt = lineTeamService.selectByLineTeamId(order.getLineteamId());
-            Map<String, Object> m = new HashMap<>();
-            Line line = lineService.selectLineByLineId(lt.getLineId());
-            List<LineViews> lineViews = viewLineService.selectAllView(line.getLineId());
-            List<Map<String, Object>> viewsList = new ArrayList<>();
-            for (LineViews lineView : lineViews) {
-                Views views = viewsService.selectViewsByViewId(lineView.getViewId());
-                Map<String, Object> t = new HashMap<>();
-                t.put("viewId", views.getViewId());
-                t.put("viewName", views.getViewName());
-                t.put("viewImage", views.getViewImage());
-                t.put("content", views.getContent());
-                t.put("lineViewsId", lineView.getLineviewsId());
-                viewsList.add(t);
+            if (lt == null) {
+                map.put("code", -2);
+                map.put("msg", "旅行信息未能获取");
+            } else {
+                Map<String, Object> m = new HashMap<>();
+                Line line = lineService.selectLineByLineId(lt.getLineId());
+                List<LineViews> lineViews = viewLineService.selectAllView(line.getLineId());
+                List<Map<String, Object>> viewsList = new ArrayList<>();
+                for (LineViews lineView : lineViews) {
+                    Views views = viewsService.selectViewsByViewId(lineView.getViewId());
+                    Map<String, Object> t = new HashMap<>();
+                    t.put("viewId", views.getViewId());
+                    t.put("viewName", views.getViewName());
+                    t.put("viewImage", views.getViewImage());
+                    t.put("content", views.getContent());
+                    t.put("lineViewsId", lineView.getLineviewsId());
+                    viewsList.add(t);
+                }
+                line.setLineImage(imgUtilService.getImgPath(line.getLineImage()));
+                Team team = teamService.selectTeamByTeamId(lt.getTeamId());
+                m.put("line", line);
+                m.put("team", team);
+                m.put("lineTeam", lt);
+                m.put("viewsList", viewsList);
+                map.put("code", 0);
+                map.put("msg", "信息查询成功");
+                map.put("data", m);
             }
-            Team team = teamService.selectTeamByTeamId(lt.getTeamId());
-            m.put("line", line);
-            m.put("team", team);
-            m.put("lineTeam", lt);
-            m.put("viewsList", viewsList);
-            map.put("code", 0);
-            map.put("msg", "信息查询成功");
-            map.put("data", m);
+        }
+        return map;
+    }
+
+    //删除订单
+    @RequestMapping("/deleteOrder")
+    public Map<String, Object> deleteOrder(HttpServletRequest request, Integer orderId) {
+        Map<String, Object> map = new HashMap<>();
+        Guest guest = jwtService.verifyToken(request, "secret");
+        if (guest != null) {
+            if (orderService.deleteOrder(orderId, guest.getGuestId()) == 1) {
+                map.put("code", 0);
+                map.put("msg", "数据删除成功");
+            } else {
+                map.put("code", -1);
+                map.put("msg", "数据删除失败");
+            }
+        } else {
+            map.put("code", 401);
+            map.put("msg", "登录失效");
         }
         return map;
     }

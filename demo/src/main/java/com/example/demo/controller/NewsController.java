@@ -1,9 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.News;
-import com.example.demo.entity.Team;
 import com.example.demo.service.NewsService;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +41,20 @@ public class NewsController {
     @RequestMapping("/insertNews")
     public Map<String, Object> insertNews(String title, String show) {
         Map<String, Object> map = new HashMap<>();
-        if (newsService.insertNews(title, show) == 1) {
-            map.put("code", 0);
-            map.put("msg", "新闻添加成功");
+        if (title == null || title.equals("")) {
+            map.put("code", -2);
+            map.put("msg", "标题不能为空");
+        } else if (show == null || show.equals("")) {
+            map.put("code", -2);
+            map.put("msg", "内容不能为空");
         } else {
-            map.put("code", -1);
-            map.put("msg", "新闻添加失败");
+            if (newsService.insertNews(title, show) == 1) {
+                map.put("code", 0);
+                map.put("msg", "新闻添加成功");
+            } else {
+                map.put("code", -1);
+                map.put("msg", "新闻添加失败");
+            }
         }
         return map;
     }
@@ -81,6 +87,31 @@ public class NewsController {
             map.put("code", 0);
             map.put("msg", "新闻信息获取成功");
             map.put("data", pageInfo);
+        }
+        return map;
+    }
+
+    //修改新闻信息
+    @RequestMapping("/update")
+    public Map<String, Object> updateNews(Integer newsId, String title, String show) {
+        Map<String, Object> map = new HashMap<>();
+        if (newsId == null){
+            map.put("code", -2);
+            map.put("msg", "新闻id不能为空");
+        } else if (title == null || title.equals("")) {
+            map.put("code", -2);
+            map.put("msg", "标题不能为空");
+        } else if (show == null || show.equals("")) {
+            map.put("code", -2);
+            map.put("msg", "内容不能为空");
+        } else {
+            if (newsService.updateNews(newsId, title, show) == 1) {
+                map.put("code", 0);
+                map.put("msg", "新闻修改成功");
+            } else {
+                map.put("code", -1);
+                map.put("msg", "新闻修改失败");
+            }
         }
         return map;
     }

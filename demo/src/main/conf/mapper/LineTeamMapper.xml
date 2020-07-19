@@ -102,25 +102,25 @@
         lt.lineTeam_id = #{lineTeamId} and
       </if>
       <if test="goDate!=null">
-        lt.go_date >= #{goDate} and
+        lt.go_date >= '${goDate}' and
       </if>
       <if test="lineId!=null">
         l.line_id = #{lineId} and
       </if>
       <if test="lineName!=null and lineName!=''">
-        l.line_name = #{lineName} and
+        l.line_name like '%${lineName}%' and
       </if>
       <if test="startPlace!=null and startPlace!=''">
-        l.start_place = #{startPlace} and
+        l.start_place like '%${startPlace}%' and
       </if>
       <if test="endPlace!=null and endPlace!=''">
-        l.end_place = #{endPlace} and
+        l.end_place like '%${endPlace}%' and
       </if>
       <if test="viewId!=null">
         v.view_id = #{viewId} and
       </if>
       <if test="viewName!=null and viewName!=''">
-        v.view_name = #{viewName} and
+        v.view_name like '%${viewName}%' and
       </if>
     </trim>
   </select>

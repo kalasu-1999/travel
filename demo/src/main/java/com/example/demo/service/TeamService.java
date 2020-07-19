@@ -19,4 +19,7 @@ public interface TeamService {
 
     //根据id获取
     Team selectTeamByTeamId(Integer teamId);
+
+    //删除旅行团
+    int deleteTeam(Integer teamId);
 }

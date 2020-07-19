@@ -32,12 +32,20 @@ public class MessageController {
             map.put("code", 401);
             map.put("msg", "登录失效");
         } else {
-            if (messageService.insertMessage(guest.getGuestId(), title, content) == 1) {
-                map.put("code", 0);
-                map.put("msg", "留言添加成功");
+            if (title == null || title.equals("")) {
+                map.put("code", -2);
+                map.put("msg", "标题不能为空");
+            } else if (content == null || content.equals("")) {
+                map.put("code", -2);
+                map.put("msg", "内容不能为空");
             } else {
-                map.put("code", -1);
-                map.put("msg", "留言添加失败");
+                if (messageService.insertMessage(guest.getGuestId(), title, content) == 1) {
+                    map.put("code", 0);
+                    map.put("msg", "留言添加成功");
+                } else {
+                    map.put("code", -1);
+                    map.put("msg", "留言添加失败");
+                }
             }
         }
         return map;
@@ -79,12 +87,12 @@ public class MessageController {
     @RequestMapping("/selectMessageByGuestId")
     public Map<String, Object> selectMessageByGuestId(HttpServletRequest request, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
         Map<String, Object> map = new HashMap<>();
+        PageHelper.startPage(page, size);
         Guest guest = jwtService.verifyToken(request, "secret");
         if (guest == null) {
             map.put("code", 401);
             map.put("msg", "登录失效");
         } else {
-            PageHelper.startPage(page, size);
             List<Map<String, Object>> messageList = messageService.selectMessageByGuestId(guest.getGuestId());
             PageInfo<Map<String, Object>> messages = new PageInfo<>(messageList);
             if (messageList.isEmpty()) {

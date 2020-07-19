@@ -15,7 +15,7 @@ public class ViewLineServiceImpl implements ViewLineService {
 
     @Override
     public int insertViewLine(Integer viewId, Integer lineId) {
-        return lineViewsMapper.insert(new LineViews(null, viewId, lineId));
+        return lineViewsMapper.insert(new LineViews(null, lineId, viewId));
     }
 
     @Override

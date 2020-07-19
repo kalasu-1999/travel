@@ -36,6 +36,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
 
 		<!--mysql-->
 		<dependency>
@@ -74,6 +79,43 @@
 			<version>RELEASE</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!--json-->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20200518</version>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.alibaba</groupId>-->
+<!--			<artifactId>fastjson</artifactId>-->
+<!--			<version>1.2.72</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>commons-beanutils</groupId>-->
+<!--			<artifactId>commons-beanutils</artifactId>-->
+<!--			<version>1.9.3</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>commons-collections</groupId>-->
+<!--			<artifactId>commons-collections</artifactId>-->
+<!--			<version>3.2.1</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>commons-lang</groupId>-->
+<!--			<artifactId>commons-lang</artifactId>-->
+<!--			<version>2.6</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>commons-logging</groupId>-->
+<!--			<artifactId>commons-logging</artifactId>-->
+<!--			<version>1.1.1</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>net.sf.ezmorph</groupId>-->
+<!--			<artifactId>ezmorph</artifactId>-->
+<!--			<version>1.0.6</version>-->
+<!--		</dependency>-->
 
 		<!--pageHelper-->
 		<dependency>

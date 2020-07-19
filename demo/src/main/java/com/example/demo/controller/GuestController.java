@@ -53,16 +53,24 @@ public class GuestController {
     @RequestMapping("/insert")
     public Map<String, Object> insertGuest(String username, String password, String address, String phone, String email) {
         Map<String, Object> map = new HashMap<>();
-        Integer integer = guestService.insertGuest(username, password, address, phone, email);
-        if (integer == -2) {
-            map.put("code", -2);
-            map.put("msg", "用户名已存在");
-        } else if (integer == 0) {
-            map.put("code", 0);
-            map.put("msg", "注册成功");
+        if (username == null || username.equals("")) {
+            map.put("code", -3);
+            map.put("msg", "用户名不能为空");
+        } else if (password == null || password.length() < 6){
+            map.put("code", -4);
+            map.put("msg", "密码应至少为6位");
         } else {
-            map.put("code", -1);
-            map.put("msg", "注册出现异常");
+            Integer integer = guestService.insertGuest(username, password, address, phone, email);
+            if (integer == -2) {
+                map.put("code", -2);
+                map.put("msg", "用户名已存在");
+            } else if (integer == 0) {
+                map.put("code", 0);
+                map.put("msg", "注册成功");
+            } else {
+                map.put("code", -1);
+                map.put("msg", "注册出现异常");
+            }
         }
         return map;
     }
@@ -73,13 +81,18 @@ public class GuestController {
         Map<String, Object> map = new HashMap<>();
         Guest guest = jwtService.verifyToken(request, "secret");
         if (guest != null) {
-            guest.setPassword(password);
-            if (guestService.changePassword(guest)) {
-                map.put("code", 0);
-                map.put("msg", "密码修改成功");
+            if (password == null || password.length() < 6){
+                map.put("code", -4);
+                map.put("msg", "密码应至少为6位");
             } else {
-                map.put("code", -1);
-                map.put("msg", "密码修改失败");
+                guest.setPassword(password);
+                if (guestService.changePassword(guest)) {
+                    map.put("code", 0);
+                    map.put("msg", "密码修改成功");
+                } else {
+                    map.put("code", -1);
+                    map.put("msg", "密码修改失败");
+                }
             }
         } else {
             map.put("code", 401);

@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.entity.LineTeam;
 import com.example.demo.entity.Order;
 import com.example.demo.mapper.OrderMapper;
 import com.example.demo.service.LineTeamService;
@@ -28,8 +29,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public int insertOrder(Integer guestId, Integer lineteamId, Integer adult, Integer child, String bak) {
-        lineTeamService.addPeople(lineteamId, adult, child);
-        return orderMapper.insert(new Order(null, guestId, lineteamId, adult, child, 0, bak));
+        LineTeam lineTeam = lineTeamService.selectByLineTeamId(lineteamId);
+        if (lineTeam == null) {
+            return 0;
+        } else if (lineTeam.getAdult() + lineTeam.getChild() + adult + child > 50) {
+            return -2;
+        } else {
+            lineTeamService.addPeople(lineteamId, adult, child);
+            return orderMapper.insert(new Order(null, guestId, lineteamId, adult, child, 0, bak));
+        }
     }
 
     @Override
@@ -40,8 +48,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int updateOrder(Integer orderId, Integer guestId, Integer lineteamId, Integer adult, Integer child, String bak) {
         Order order = orderMapper.selectByPrimaryKey(orderId);
-        lineTeamService.addPeople(lineteamId, adult - order.getAdult(), child - order.getChild());
-        return orderMapper.updateByPrimaryKey(new Order(orderId, guestId, lineteamId, adult, child,null, bak));
+        LineTeam lineTeam = lineTeamService.selectByLineTeamId(lineteamId);
+        if (lineTeam == null) {
+            return 0;
+        } else if (lineTeam.getAdult() + lineTeam.getChild() + adult + child - order.getAdult() - order.getChild() > 50) {
+            return -2;
+        } else {
+            lineTeamService.addPeople(lineteamId, adult - order.getAdult(), child - order.getChild());
+            return orderMapper.updateByPrimaryKey(new Order(orderId, guestId, lineteamId, adult, child, null, bak));
+        }
     }
 
     @Override
@@ -52,5 +67,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> selectAllOrder() {
         return orderMapper.selectAll();
+    }
+
+    @Override
+    public int deleteOrder(Integer orderId, Integer guestId) {
+        Order order = orderMapper.selectOrderByOrderIdAndGuestId(orderId, guestId);
+        if (order != null) {
+            lineTeamService.addPeople(order.getLineteamId(), -order.getAdult(), -order.getChild());
+            return orderMapper.deleteByPrimaryKey(orderId);
+        } else {
+            return 0;
+        }
     }
 }

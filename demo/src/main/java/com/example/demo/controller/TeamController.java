@@ -62,12 +62,20 @@ public class TeamController {
     @RequestMapping("/updateTeamByTeamId")
     public Map<String, Object> updateTeamByTeamId(Integer teamId, String guide1, String guide2, String phone, String bak) {
         Map<String, Object> map = new HashMap<>();
-        if (teamService.updateTeamByTeamId(teamId, guide1, guide2, phone, bak) == 1) {
-            map.put("code", 0);
-            map.put("msg", "旅行团信息修改成功");
+        if (teamId == null) {
+            map.put("code", -2);
+            map.put("msg", "旅行团id不能为空");
+        } else if (guide1 == null || guide1.equals("")) {
+            map.put("code", -2);
+            map.put("msg", "旅行团主导游不能为空");
         } else {
-            map.put("code", -1);
-            map.put("msg", "旅行团信息修改失败");
+            if (teamService.updateTeamByTeamId(teamId, guide1, guide2, phone, bak) == 1) {
+                map.put("code", 0);
+                map.put("msg", "旅行团信息修改成功");
+            } else {
+                map.put("code", -1);
+                map.put("msg", "旅行团信息修改失败");
+            }
         }
         return map;
     }
@@ -76,12 +84,17 @@ public class TeamController {
     @RequestMapping("/insertTeam")
     public Map<String, Object> insertTeam(String guide1, String guide2, String phone, String bak) {
         Map<String, Object> map = new HashMap<>();
-        if (teamService.insertTeam(guide1, guide2, phone, bak) == 1) {
-            map.put("code", 0);
-            map.put("msg", "旅行团信息修改成功");
+        if (guide1 == null || guide1.equals("")) {
+            map.put("code", -2);
+            map.put("msg", "旅行团主导游不能为空");
         } else {
-            map.put("code", -1);
-            map.put("msg", "旅行团信息修改失败");
+            if (teamService.insertTeam(guide1, guide2, phone, bak) == 1) {
+                map.put("code", 0);
+                map.put("msg", "旅行团信息修改成功");
+            } else {
+                map.put("code", -1);
+                map.put("msg", "旅行团信息修改失败");
+            }
         }
         return map;
     }
@@ -116,6 +129,31 @@ public class TeamController {
             map.put("code", 0);
             map.put("msg", "旅行团信息获取成功");
             map.put("data", team);
+        }
+        return map;
+    }
+
+    //删除
+    @RequestMapping("/delete")
+    public Map<String, Object> deleteByTeamId(Integer teamId) {
+        Map<String, Object> map = new HashMap<>();
+        if (teamId == null) {
+            map.put("code", -2);
+            map.put("msg", "旅行团id不能为空");
+        } else {
+            Team team = teamService.selectTeamByTeamId(teamId);
+            if (team == null) {
+                map.put("code", -1);
+                map.put("msg", "旅行团信息删除失败");
+            } else {
+                if (teamService.deleteTeam(teamId) == 1) {
+                    map.put("code", 0);
+                    map.put("msg", "旅行团信息删除成功");
+                } else {
+                    map.put("code", -1);
+                    map.put("msg", "旅行团信息删除失败");
+                }
+            }
         }
         return map;
     }

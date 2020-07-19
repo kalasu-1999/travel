@@ -1,6 +1,7 @@
 package com.example.demo.mapper;
 
 import com.example.demo.entity.Order;
+
 import java.util.List;
 
 public interface OrderMapper {
@@ -22,4 +23,6 @@ public interface OrderMapper {
 
     //按订单标记查询
     List<Order> selectOrderByTag(Integer tag);
+
+    Order selectOrderByOrderIdAndGuestId(Integer orderId, Integer guestId);
 }

@@ -14,7 +14,7 @@ public interface NewsMapper {
 
     int updateByPrimaryKey(News record);
 
-    //根据新闻id修改标识
+    //删除
     int updateFlagByNewsId(Integer newsId);
 
     //根据输入信息对新闻进行模糊查询

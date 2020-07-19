@@ -11,9 +11,12 @@ public interface NewsService {
     //添加新闻
     int insertNews(String title, String show);
 
-    //根据新闻id修改新闻标识
+    //删除
     int updateNewsByNewsId(Integer newsId);
 
     //根据标题信息模糊查询
     List<News> selectNewsByHint(String hint);
+
+    //修改新闻
+    int updateNews(Integer newsId, String title, String show);
 }

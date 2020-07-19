@@ -18,11 +18,14 @@ public interface OrderService {
     List<Order> selectAllOrder();
 
     //修改订单标记
-    int updateOrderTag(Integer orderId,Integer tag);
+    int updateOrderTag(Integer orderId, Integer tag);
 
     //按订单标记查询
     List<Order> selectOrderByTag(Integer tag);
 
     //根据订单号查询订单
     Order selectOrderById(Integer orderId);
+
+    //取消订单
+    int deleteOrder(Integer orderId, Integer guestId);
 }

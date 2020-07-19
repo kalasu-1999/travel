@@ -41,4 +41,11 @@ public class TeamServiceImpl implements TeamService {
     public Team selectTeamByTeamId(Integer teamId) {
         return teamMapper.selectByPrimaryKey(teamId);
     }
+
+    @Override
+    public int deleteTeam(Integer teamId) {
+        return teamMapper.deleteByPrimaryKey(teamId
+
+        );
+    }
 }

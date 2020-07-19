@@ -64,4 +64,11 @@
     from orders
     where tag = #{tag,jdbcType=INTEGER}
   </select>
+
+  <!--Order selectOrderByOrderIdAndGuestId(Integer orderId, Integer guestId);-->
+  <select id="selectOrderByOrderIdAndGuestId" resultMap="BaseResultMap">
+    select order_id, guest_id, lineTeam_id, adult, child, tag, bak
+    from orders
+    where order_id = #{orderId,jdbcType=INTEGER} and guest_id = #{guestId,jdbcType=INTEGER}
+  </select>
 </mapper>
